@@ -1,386 +1,166 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Car Deals Direct Kigali | Rwanda's #1 Premium Cars for Sale & Rent</title>
-    <meta name="description" content="Rwanda's leading premium car dealership. Buy or rent luxury vehicles in Kigali. Direct imports, verified quality, unmatched service.">
+    <title>Car Deals Direct Kigali | Premium Cars for Sale & Rent</title>
     <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="https://i.imgur.com/TgSy20k.jpeg">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Google Fonts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
-
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    colors: {
-                        primary: '#f59e0b',
-                        primaryHover: '#d97706',
-                        gold: '#FFD700',
-                        dark: '#030712',
-                        darker: '#000000',
-                        card: '#0a0f1a',
-                    }
+                    fontFamily: { sans: ['Outfit','sans-serif'], serif: ['Playfair Display','serif'] },
+                    colors: { primary:'#f59e0b', primaryHover:'#d97706', gold:'#FFD700', dark:'#030712', darker:'#000000', card:'#0a0f1a' }
                 }
             }
         }
     </script>
-
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#030712}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f59e0b,#d97706);border-radius:10px}
+        .preloader{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .6s,visibility .6s}
+        .preloader.done{opacity:0;visibility:hidden;pointer-events:none}
+        .preloader-logo{width:72px;height:72px;border-radius:50%;border:2px solid #f59e0b;animation:pg 1.5s ease-in-out infinite}
+        .preloader-bar{width:140px;height:2px;background:#1a1a2e;border-radius:10px;margin-top:24px;overflow:hidden}
+        .preloader-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#f59e0b,#FFD700);border-radius:10px;animation:lb 1.8s ease-in-out forwards}
+        @keyframes lb{0%{width:0}50%{width:70%}100%{width:100%}}
+        @keyframes pg{0%,100%{box-shadow:0 0 15px rgba(245,158,11,.3);transform:scale(1)}50%{box-shadow:0 0 40px rgba(245,158,11,.7);transform:scale(1.04)}}
+        .page-wrap{opacity:0;animation:fi .8s ease 2s forwards}@keyframes fi{to{opacity:1}}
+        .glass-nav{background:rgba(0,0,0,.75);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid rgba(245,158,11,.08);transition:all .4s}
+        .glass-nav.scrolled{background:rgba(0,0,0,.95);border-bottom-color:rgba(245,158,11,.25);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+        .hero-bg img{width:100%;height:100%;object-fit:cover;animation:hz 25s ease-in-out infinite alternate}
+        @keyframes hz{0%{transform:scale(1.05)}100%{transform:scale(1.2)}}
+        .hero-overlay{background:radial-gradient(ellipse at 30% 90%,rgba(245,158,11,.08) 0%,transparent 50%),linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.4) 40%,rgba(0,0,0,.85) 75%,#000 100%)}
+        .particle{position:absolute;border-radius:50%;background:rgba(245,158,11,.35);animation:fu linear infinite;pointer-events:none}
+        @keyframes fu{0%{transform:translateY(100vh);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-5vh);opacity:0}}
+        .gradient-text{background:linear-gradient(135deg,#f59e0b,#FFD700,#f59e0b,#fbbf24);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gs 4s ease infinite}
+        @keyframes gs{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        .badge-pulse{animation:bp 2s ease-in-out infinite}@keyframes bp{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.4)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
+        .btn-shine{position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1)}
+        .btn-shine::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);transition:left .5s}
+        .btn-shine:hover::before{left:100%}.btn-shine:active{transform:scale(.97)}
+        .luxury-card{background:linear-gradient(160deg,#0a0f1a,#0d1117);border:1px solid rgba(245,158,11,.06);border-radius:20px;overflow:hidden;transition:all .5s cubic-bezier(.4,0,.2,1);position:relative;cursor:pointer}
+        .luxury-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.4),transparent);opacity:0;transition:opacity .4s;z-index:2}
+        .luxury-card:hover::before{opacity:1}.luxury-card:hover{border-color:rgba(245,158,11,.2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+        .luxury-card .card-img{transition:transform 1s cubic-bezier(.4,0,.2,1)}.luxury-card:hover .card-img{transform:scale(1.08)}
+        .search-box{background:linear-gradient(145deg,#0a0f1a,#0d1117);border:1px solid rgba(245,158,11,.1);transition:all .4s}
+        .search-box:focus{border-color:rgba(245,158,11,.4);box-shadow:0 0 20px rgba(245,158,11,.08)}
+        .filter-tab{padding:.5rem 1rem;border-radius:100px;font-weight:700;font-size:.65rem;letter-spacing:.04em;text-transform:uppercase;transition:all .3s;cursor:pointer;border:1px solid rgba(245,158,11,.08);color:#6b7280;white-space:nowrap}
+        .filter-tab:hover,.filter-tab.active{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35);color:#f59e0b}
+        .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.2),transparent)}
+        .feat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.04));border:1px solid rgba(245,158,11,.15);transition:all .4s;flex-shrink:0}
+        .feat-card:hover .feat-icon{background:linear-gradient(135deg,rgba(245,158,11,.25),rgba(245,158,11,.08));border-color:#f59e0b;box-shadow:0 0 20px rgba(245,158,11,.15)}
+        .step-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(245,158,11,.1),transparent);border:2px solid rgba(245,158,11,.2);transition:all .4s;flex-shrink:0}
+        .stat-card{background:linear-gradient(145deg,rgba(245,158,11,.04),transparent);border:1px solid rgba(245,158,11,.08);border-radius:16px;padding:1rem;text-align:center;transition:all .4s}
+        .testimonial-card{background:linear-gradient(145deg,#0a0f1a,#0d1117);border:1px solid rgba(245,158,11,.08);border-radius:20px;padding:1.25rem;transition:all .4s}
+        .testimonial-card:hover{border-color:rgba(245,158,11,.2);transform:translateY(-3px)}
+        .marquee-wrap{overflow:hidden;white-space:nowrap}.marquee-track{display:inline-block;animation:mq 35s linear infinite}@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .nav-ul{position:relative}.nav-ul::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:#f59e0b;transition:width .3s}.nav-ul:hover::after{width:100%}
+        .logo-glow{box-shadow:0 0 16px rgba(245,158,11,.35);transition:all .4s}.logo-glow:hover{box-shadow:0 0 28px rgba(245,158,11,.6);transform:scale(1.06)}
+        .wa-float{animation:wf 3s ease-in-out infinite}@keyframes wf{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .cta-ring{border:1px solid rgba(245,158,11,.1);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+        .shimmer{background:linear-gradient(110deg,#0a0f1a 8%,#151b28 18%,#0a0f1a 33%);background-size:200% 100%;animation:sh 1.5s linear infinite}@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        .mob-menu-inner{transform:translateY(-10px);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1)}.mob-menu-inner.open{transform:translateY(0);opacity:1}
 
-        html { font-size: 16px; }
-        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        /* Modal */
+        .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:all .3s}
+        .modal-overlay.show{opacity:1;visibility:visible}
+        .modal-content{background:#0a0f1a;border:1px solid rgba(245,158,11,.15);border-radius:20px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:all .4s cubic-bezier(.4,0,.2,1)}
+        .modal-overlay.show .modal-content{transform:translateY(0) scale(1)}
+        .modal-lg{max-width:800px}
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f59e0b, #d97706); border-radius: 10px; }
+        /* Admin */
+        .admin-wrap{position:fixed;inset:0;z-index:300;background:#030712;overflow-y:auto}
+        .admin-tab{padding:.6rem 1rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;border-bottom:2px solid transparent;white-space:nowrap;transition:all .3s;cursor:pointer}
+        .admin-tab:hover,.admin-tab.active{color:#f59e0b;border-bottom-color:#f59e0b}
+        .admin-card{background:#0a0f1a;border:1px solid rgba(245,158,11,.08);border-radius:16px;padding:1.25rem;transition:all .3s}
+        .admin-card:hover{border-color:rgba(245,158,11,.2)}
+        .admin-input{width:100%;background:#0d1117;border:1px solid rgba(245,158,11,.1);border-radius:12px;padding:.7rem 1rem;color:#fff;font-size:.85rem;transition:all .3s;outline:none}
+        .admin-input:focus{border-color:rgba(245,158,11,.4);box-shadow:0 0 15px rgba(245,158,11,.06)}
+        .admin-input::placeholder{color:#4b5563}
+        .admin-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23f59e0b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center}
+        .admin-btn{padding:.6rem 1.2rem;border-radius:10px;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;transition:all .3s;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem}
+        .status-badge{font-size:.6rem;font-weight:700;padding:.25rem .6rem;border-radius:100px;text-transform:uppercase;letter-spacing:.05em}
+        .status-new{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+        .status-contacted,.status-confirmed{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+        .status-closed,.status-completed{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+        .status-cancelled,.status-pending{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+        .status-pending{background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
 
-        /* ===== PRELOADER ===== */
-        .preloader {
-            position: fixed; inset: 0; z-index: 9999;
-            background: #000;
-            display: flex; align-items: center; justify-content: center; flex-direction: column;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        .preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
-        .preloader-logo {
-            width: 72px; height: 72px; border-radius: 50%;
-            border: 2px solid #f59e0b;
-            animation: pulse-glow 1.5s ease-in-out infinite;
-        }
-        .preloader-bar { width: 140px; height: 2px; background: #1a1a2e; border-radius: 10px; margin-top: 24px; overflow: hidden; }
-        .preloader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #f59e0b, #FFD700); border-radius: 10px; animation: load-bar 1.8s ease-in-out forwards; }
-        @keyframes load-bar { 0%{width:0%} 50%{width:70%} 100%{width:100%} }
-        @keyframes pulse-glow {
-            0%,100%{ box-shadow: 0 0 15px rgba(245,158,11,0.3); transform: scale(1); }
-            50%{ box-shadow: 0 0 40px rgba(245,158,11,0.7); transform: scale(1.04); }
-        }
+        .toast{position:fixed;top:5rem;right:1rem;z-index:9999;padding:.8rem 1.2rem;border-radius:12px;font-size:.8rem;font-weight:600;transform:translateX(120%);transition:transform .4s cubic-bezier(.4,0,.2,1);max-width:90vw}
+        .toast.show{transform:translateX(0)}
+        .toast-success{background:#065f46;color:#6ee7b7;border:1px solid #10b981}
+        .toast-error{background:#7f1d1d;color:#fca5a5;border:1px solid #ef4444}
+        .toast-info{background:#1e3a5f;color:#93c5fd;border:1px solid #3b82f6}
 
-        .page-wrap { opacity: 0; animation: fadeIn 0.8s ease 2s forwards; }
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        /* ===== GLASS NAV ===== */
-        .glass-nav {
-            background: rgba(0,0,0,0.75);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(245,158,11,0.08);
-            transition: all 0.4s ease;
-        }
-        .glass-nav.scrolled {
-            background: rgba(0,0,0,0.95);
-            border-bottom-color: rgba(245,158,11,0.25);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
-
-        /* ===== HERO ===== */
-        .hero-bg img {
-            width: 100%; height: 100%; object-fit: cover;
-            animation: heroZoom 25s ease-in-out infinite alternate;
-        }
-        @keyframes heroZoom { 0%{transform:scale(1.05)} 100%{transform:scale(1.2)} }
-        .hero-overlay {
-            background:
-                radial-gradient(ellipse at 30% 90%, rgba(245,158,11,0.08) 0%, transparent 50%),
-                linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 75%, #000 100%);
-        }
-
-        /* ===== PARTICLES ===== */
-        .particle {
-            position: absolute; border-radius: 50%;
-            background: rgba(245,158,11,0.35);
-            animation: floatUp linear infinite;
-            pointer-events: none;
-        }
-        @keyframes floatUp {
-            0%{ transform: translateY(100vh); opacity: 0; }
-            10%{ opacity: 0.8; }
-            90%{ opacity: 0.8; }
-            100%{ transform: translateY(-5vh); opacity: 0; }
-        }
-
-        /* ===== GRADIENT TEXT ===== */
-        .gradient-text {
-            background: linear-gradient(135deg, #f59e0b, #FFD700, #f59e0b, #fbbf24);
-            background-size: 300% 300%;
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradShift 4s ease infinite;
-        }
-        @keyframes gradShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-
-        /* ===== BADGE PULSE ===== */
-        .badge-pulse { animation: badgePulse 2s ease-in-out infinite; }
-        @keyframes badgePulse {
-            0%,100%{ box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
-            50%{ box-shadow: 0 0 0 6px rgba(245,158,11,0); }
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn-shine {
-            position: relative; overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-        }
-        .btn-shine::before {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: left 0.5s ease;
-        }
-        .btn-shine:hover::before { left: 100%; }
-        .btn-shine:active { transform: scale(0.97); }
-
-        /* ===== LUXURY CARD ===== */
-        .luxury-card {
-            background: linear-gradient(160deg, #0a0f1a, #0d1117);
-            border: 1px solid rgba(245,158,11,0.06);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
-        }
-        .luxury-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(245,158,11,0.4), transparent);
-            opacity: 0; transition: opacity 0.4s;
-        }
-        .luxury-card:hover::before { opacity: 1; }
-        .luxury-card:hover {
-            border-color: rgba(245,158,11,0.2);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 24px rgba(245,158,11,0.04);
-        }
-        .luxury-card .card-img { transition: transform 1s cubic-bezier(0.4,0,0.2,1); }
-        .luxury-card:hover .card-img { transform: scale(1.08); }
-
-        /* ===== SEARCH ===== */
-        .search-box {
-            background: linear-gradient(145deg, #0a0f1a, #0d1117);
-            border: 1px solid rgba(245,158,11,0.1);
-            transition: all 0.4s ease;
-        }
-        .search-box:focus {
-            border-color: rgba(245,158,11,0.4);
-            box-shadow: 0 0 20px rgba(245,158,11,0.08), 0 0 0 3px rgba(245,158,11,0.04);
-        }
-
-        /* ===== FILTER TAB ===== */
-        .filter-tab {
-            padding: 0.5rem 1.1rem; border-radius: 100px;
-            font-weight: 700; font-size: 0.68rem;
-            letter-spacing: 0.04em; text-transform: uppercase;
-            transition: all 0.3s ease; cursor: pointer;
-            border: 1px solid rgba(245,158,11,0.08);
-            color: #6b7280; white-space: nowrap;
-        }
-        .filter-tab:hover, .filter-tab.active {
-            background: rgba(245,158,11,0.12);
-            border-color: rgba(245,158,11,0.35);
-            color: #f59e0b;
-        }
-
-        /* ===== SECTION DIVIDER ===== */
-        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(245,158,11,0.2), transparent); }
-
-        /* ===== FEATURE ICON ===== */
-        .feat-icon {
-            width: 52px; height: 52px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
-            border: 1px solid rgba(245,158,11,0.15);
-            transition: all 0.4s ease; flex-shrink: 0;
-        }
-        .feat-card:hover .feat-icon {
-            background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.08));
-            border-color: #f59e0b;
-            box-shadow: 0 0 20px rgba(245,158,11,0.15);
-            transform: scale(1.08);
-        }
-
-        /* ===== STEP NUMBER ===== */
-        .step-num {
-            width: 56px; height: 56px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, rgba(245,158,11,0.1), transparent);
-            border: 2px solid rgba(245,158,11,0.2);
-            transition: all 0.4s ease; flex-shrink: 0;
-        }
-        .step-card:hover .step-num {
-            background: linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.08));
-            border-color: #f59e0b;
-            box-shadow: 0 0 24px rgba(245,158,11,0.15);
-        }
-
-        /* ===== STAT CARD ===== */
-        .stat-card {
-            background: linear-gradient(145deg, rgba(245,158,11,0.04), transparent);
-            border: 1px solid rgba(245,158,11,0.08);
-            border-radius: 16px; padding: 1.25rem; text-align: center;
-            transition: all 0.4s ease;
-        }
-        .stat-card:hover { border-color: rgba(245,158,11,0.25); transform: translateY(-3px); }
-
-        /* ===== TESTIMONIAL CARD ===== */
-        .testimonial-card {
-            background: linear-gradient(145deg, #0a0f1a, #0d1117);
-            border: 1px solid rgba(245,158,11,0.08);
-            border-radius: 20px; padding: 1.5rem;
-            transition: all 0.4s ease;
-        }
-        .testimonial-card:hover { border-color: rgba(245,158,11,0.2); transform: translateY(-3px); }
-
-        /* ===== MARQUEE ===== */
-        .marquee-wrap { overflow: hidden; white-space: nowrap; }
-        .marquee-track { display: inline-block; animation: marquee 35s linear infinite; }
-        @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
-        /* ===== NAV LINK UNDERLINE ===== */
-        .nav-ul { position: relative; }
-        .nav-ul::after {
-            content: ''; position: absolute; bottom: -3px; left: 0;
-            width: 0; height: 1.5px; background: #f59e0b;
-            transition: width 0.3s ease;
-        }
-        .nav-ul:hover::after { width: 100%; }
-
-        /* ===== LOGO GLOW ===== */
-        .logo-glow {
-            box-shadow: 0 0 16px rgba(245,158,11,0.35);
-            transition: all 0.4s ease;
-        }
-        .logo-glow:hover { box-shadow: 0 0 28px rgba(245,158,11,0.6); transform: scale(1.06); }
-
-        /* ===== WA FLOAT ===== */
-        .wa-float { animation: waFloat 3s ease-in-out infinite; }
-        @keyframes waFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-
-        /* ===== CTA RINGS ===== */
-        .cta-ring {
-            border: 1px solid rgba(245,158,11,0.1);
-            border-radius: 50%; position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%,-50%);
-        }
-
-        /* ===== SHIMMER ===== */
-        .shimmer {
-            background: linear-gradient(110deg, #0a0f1a 8%, #151b28 18%, #0a0f1a 33%);
-            background-size: 200% 100%;
-            animation: shimmerAnim 1.5s linear infinite;
-        }
-        @keyframes shimmerAnim { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-
-        /* ===== MOBILE MENU ===== */
-        .mob-menu-inner {
-            transform: translateY(-10px); opacity: 0;
-            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-        }
-        .mob-menu-inner.open { transform: translateY(0); opacity: 1; }
-
-        /* ===== TOUCH-FRIENDLY ===== */
-        @media (max-width: 768px) {
-            .luxury-card:hover { transform: none; }
-            .luxury-card:active { transform: scale(0.98); }
-            .stat-card:hover { transform: none; }
-        }
-
-        /* ===== SAFE AREA (notch phones) ===== */
-        @supports(padding: env(safe-area-inset-bottom)) {
-            .wa-float { bottom: calc(1rem + env(safe-area-inset-bottom)); }
-            footer { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)); }
-        }
+        @media(max-width:768px){.luxury-card:hover{transform:none}.luxury-card:active{transform:scale(.98)}.stat-card:hover{transform:none}}
+        @supports(padding:env(safe-area-inset-bottom)){.wa-float{bottom:calc(1rem + env(safe-area-inset-bottom))}footer{padding-bottom:calc(2.5rem + env(safe-area-inset-bottom))}}
     </style>
 </head>
-
 <body class="bg-dark text-gray-200 font-sans antialiased overflow-x-hidden">
 
-<!-- ========== PRELOADER ========== -->
 <div class="preloader" id="preloader">
     <img src="https://i.imgur.com/TgSy20k.jpeg" alt="Logo" class="preloader-logo object-cover">
     <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
     <p class="text-gray-600 text-[10px] mt-5 tracking-[0.25em] uppercase">Loading Excellence...</p>
 </div>
 
-<!-- ========== PAGE WRAP ========== -->
-<div class="page-wrap">
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
 
-<!-- ===== NAVIGATION ===== -->
+<!-- ========== PUBLIC SITE ========== -->
+<div class="page-wrap" id="publicSite">
+
 <nav class="fixed w-full z-50 glass-nav" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 md:h-20 lg:h-24">
-            <!-- Logo -->
             <div class="flex items-center gap-2.5 cursor-pointer" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-                <img src="https://i.imgur.com/TgSy20k.jpeg" alt="Car Deals Direct"
-                    class="w-10 h-10 md:w-14 md:h-14 object-cover rounded-full border-2 border-primary logo-glow">
+                <img src="https://i.imgur.com/TgSy20k.jpeg" alt="Logo" class="w-10 h-10 md:w-14 md:h-14 object-cover rounded-full border-2 border-primary logo-glow">
                 <div class="flex flex-col">
                     <span class="text-white font-black text-sm md:text-lg leading-none uppercase tracking-tight">Car Deals Direct</span>
                     <span class="text-primary text-[8px] md:text-[10px] font-bold tracking-[0.3em] uppercase">Kigali • Rwanda</span>
                 </div>
             </div>
-
-            <!-- Desktop Menu -->
             <div class="hidden lg:flex items-center gap-7">
-                <a href="#home" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[0.12em] transition-colors">Home</a>
-                <a href="#fleet" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[0.12em] transition-colors">Fleet</a>
-                <a href="#why-us" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[0.12em] transition-colors">Why Us</a>
-                <a href="#process" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[0.12em] transition-colors">Process</a>
-                <a href="#reviews" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[0.12em] transition-colors">Reviews</a>
+                <a href="#home" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[.12em]">Home</a>
+                <a href="#fleet" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[.12em]">Fleet</a>
+                <a href="#why-us" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[.12em]">Why Us</a>
+                <a href="#process" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[.12em]">Process</a>
+                <a href="#reviews" class="nav-ul text-gray-400 hover:text-primary text-[11px] font-bold uppercase tracking-[.12em]">Reviews</a>
                 <div class="flex items-center gap-3 border-l border-gray-800 pl-6">
-                    <a href="tel:+250786075521" class="text-gray-500 hover:text-primary transition-colors p-1.5">
-                        <i data-lucide="phone" class="w-4 h-4"></i>
-                    </a>
-                    <a href="https://wa.me/250786075521" target="_blank"
-                        class="btn-shine bg-primary hover:bg-primaryHover text-darker font-black px-6 py-2.5 rounded-full flex items-center gap-2 text-xs">
+                    <a href="tel:+250786075521" class="text-gray-500 hover:text-primary p-1.5"><i data-lucide="phone" class="w-4 h-4"></i></a>
+                    <a href="https://wa.me/250786075521" target="_blank" class="btn-shine bg-primary hover:bg-primaryHover text-darker font-black px-6 py-2.5 rounded-full flex items-center gap-2 text-xs">
                         <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> INQUIRE
                     </a>
                 </div>
             </div>
-
-            <!-- Mobile Button -->
-            <button id="mobBtn" class="lg:hidden text-white p-2 rounded-xl border border-gray-800 active:bg-gray-800 transition-colors" aria-label="Menu">
-                <i data-lucide="menu" class="w-5 h-5" id="mobIcon"></i>
-            </button>
+            <button id="mobBtn" class="lg:hidden text-white p-2 rounded-xl border border-gray-800 active:bg-gray-800"><i data-lucide="menu" class="w-5 h-5"></i></button>
         </div>
     </div>
-
-    <!-- Mobile Menu -->
     <div id="mobMenu" class="hidden lg:hidden absolute w-full">
         <div class="mob-menu-inner bg-black/95 backdrop-blur-2xl border-t border-primary/10 px-5 py-6">
             <div class="space-y-1">
-                <a href="#home" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60 active:text-primary">Home</a>
-                <a href="#fleet" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60 active:text-primary">Fleet</a>
-                <a href="#why-us" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60 active:text-primary">Why Us</a>
-                <a href="#process" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60 active:text-primary">Process</a>
-                <a href="#reviews" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60 active:text-primary">Reviews</a>
+                <a href="#home" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60">Home</a>
+                <a href="#fleet" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60">Fleet</a>
+                <a href="#why-us" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60">Why Us</a>
+                <a href="#process" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60">Process</a>
+                <a href="#reviews" class="mob-link block text-white font-bold uppercase tracking-wider py-3 text-sm border-b border-gray-900/60">Reviews</a>
             </div>
             <div class="pt-5 grid grid-cols-2 gap-3">
-                <a href="https://wa.me/250786075521" target="_blank"
-                    class="btn-shine bg-primary text-darker font-black py-3.5 rounded-xl text-center text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                <a href="https://wa.me/250786075521" target="_blank" class="btn-shine bg-primary text-darker font-black py-3.5 rounded-xl text-center text-xs uppercase flex items-center justify-center gap-2">
                     <i data-lucide="message-circle" class="w-4 h-4"></i> Chat
                 </a>
-                <a href="https://whatsapp.com/channel/0029VbB5YllI7BeGRhqGPz1S" target="_blank"
-                    class="bg-gray-900 text-white font-bold py-3.5 rounded-xl text-center text-xs uppercase tracking-wider border border-gray-800 flex items-center justify-center gap-2">
+                <a href="https://whatsapp.com/channel/0029VbB5YllI7BeGRhqGPz1S" target="_blank" class="bg-gray-900 text-white font-bold py-3.5 rounded-xl text-center text-xs uppercase border border-gray-800 flex items-center justify-center gap-2">
                     <i data-lucide="rss" class="w-4 h-4"></i> Channel
                 </a>
             </div>
@@ -388,257 +168,114 @@
     </div>
 </nav>
 
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
     <div class="hero-bg absolute inset-0 z-0">
-        <img src="https://i.imgur.com/c8lohik.jpeg" alt="Premium Car" />
+        <img src="https://i.imgur.com/c8lohik.jpeg" alt="Premium Car">
         <div class="hero-overlay absolute inset-0"></div>
     </div>
-
-    <!-- Particles -->
     <div class="absolute inset-0 z-[1] pointer-events-none overflow-hidden" id="particles"></div>
-
     <div class="relative z-10 text-center px-5 max-w-5xl mx-auto pt-20 pb-10">
-        <!-- Badge -->
         <div class="flex justify-center mb-5 md:mb-8" data-aos="fade-down" data-aos-delay="200">
             <div class="bg-primary/10 backdrop-blur-xl border border-primary/15 px-4 py-1.5 rounded-full inline-flex items-center gap-2">
                 <span class="w-1.5 h-1.5 bg-primary rounded-full badge-pulse inline-block"></span>
                 <span class="text-primary font-semibold tracking-widest uppercase text-[9px] md:text-[11px]">Rwanda's Premier Dealership</span>
             </div>
         </div>
-
-        <!-- Heading -->
-        <h1 class="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[0.88] mb-5 md:mb-7 tracking-tighter" data-aos="fade-up" data-aos-delay="400">
-            DRIVE<br>
-            <span class="gradient-text font-serif italic text-[3rem] sm:text-7xl md:text-8xl lg:text-9xl">Excellence.</span>
+        <h1 class="text-[2.75rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[.88] mb-5 md:mb-7 tracking-tighter" data-aos="fade-up" data-aos-delay="400">
+            DRIVE<br><span class="gradient-text font-serif italic text-[3rem] sm:text-7xl md:text-8xl lg:text-9xl">Excellence.</span>
         </h1>
-
-        <!-- Sub -->
-        <p class="text-sm sm:text-lg md:text-xl text-gray-400 mb-8 md:mb-10 max-w-xl mx-auto font-light leading-relaxed" data-aos="fade-up" data-aos-delay="600">
-            Hand-picked premium vehicles. Direct imports. Unmatched deals in Kigali.
-        </p>
-
-        <!-- CTA -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10 md:mb-16" data-aos="fade-up" data-aos-delay="800">
-            <a href="#fleet"
-                class="btn-shine w-full sm:w-auto px-8 py-3.5 bg-white text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-wider">
-                Explore Fleet <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-            </a>
-            <a href="https://whatsapp.com/channel/0029VbB5YllI7BeGRhqGPz1S" target="_blank"
-                class="btn-shine w-full sm:w-auto px-8 py-3.5 bg-primary text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-wider">
-                <i data-lucide="rss" class="w-4 h-4"></i> Join WhatsApp
-            </a>
-        </div>
-
-        <!-- Scroll -->
-        <div class="hidden md:flex flex-col items-center gap-2 animate-bounce" data-aos="fade-up" data-aos-delay="1100">
-            <span class="text-gray-600 text-[9px] uppercase tracking-[0.3em]">Scroll</span>
-            <div class="w-[1px] h-8 bg-gradient-to-b from-primary/40 to-transparent"></div>
+        <p class="text-sm sm:text-lg md:text-xl text-gray-400 mb-8 max-w-xl mx-auto font-light leading-relaxed" data-aos="fade-up" data-aos-delay="600">Hand-picked premium vehicles. Direct imports. Unmatched deals in Kigali.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10" data-aos="fade-up" data-aos-delay="800">
+            <a href="#fleet" class="btn-shine w-full sm:w-auto px-8 py-3.5 bg-white text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-wider">Explore Fleet <i data-lucide="arrow-down-right" class="w-4 h-4"></i></a>
+            <a href="https://whatsapp.com/channel/0029VbB5YllI7BeGRhqGPz1S" target="_blank" class="btn-shine w-full sm:w-auto px-8 py-3.5 bg-primary text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-wider"><i data-lucide="rss" class="w-4 h-4"></i> Join WhatsApp</a>
         </div>
     </div>
 </section>
 
-<!-- ===== MARQUEE ===== -->
+<!-- MARQUEE -->
 <div class="bg-primary py-2.5 overflow-hidden">
-    <div class="marquee-wrap">
-        <div class="marquee-track">
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="star" class="w-3 h-3 fill-current"></i> PREMIUM IMPORTS
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="shield-check" class="w-3 h-3"></i> VERIFIED QUALITY
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="truck" class="w-3 h-3"></i> DIRECT DEALS
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3 h-3"></i> KIGALI, RWANDA
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="award" class="w-3 h-3"></i> 500+ HAPPY CLIENTS
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="car" class="w-3 h-3"></i> SALES & RENTALS
-            </span>
-            <!-- duplicate -->
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="star" class="w-3 h-3 fill-current"></i> PREMIUM IMPORTS
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="shield-check" class="w-3 h-3"></i> VERIFIED QUALITY
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="truck" class="w-3 h-3"></i> DIRECT DEALS
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3 h-3"></i> KIGALI, RWANDA
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="award" class="w-3 h-3"></i> 500+ HAPPY CLIENTS
-            </span>
-            <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5">
-                <i data-lucide="car" class="w-3 h-3"></i> SALES & RENTALS
-            </span>
-        </div>
-    </div>
+    <div class="marquee-wrap"><div class="marquee-track">
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="star" class="w-3 h-3 fill-current"></i> PREMIUM IMPORTS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3 h-3"></i> VERIFIED QUALITY</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="truck" class="w-3 h-3"></i> DIRECT DEALS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3 h-3"></i> KIGALI</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="award" class="w-3 h-3"></i> 500+ CLIENTS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="car" class="w-3 h-3"></i> SALES & RENTALS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="star" class="w-3 h-3 fill-current"></i> PREMIUM IMPORTS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3 h-3"></i> VERIFIED QUALITY</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="truck" class="w-3 h-3"></i> DIRECT DEALS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3 h-3"></i> KIGALI</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="award" class="w-3 h-3"></i> 500+ CLIENTS</span>
+        <span class="text-darker font-black text-[10px] sm:text-xs tracking-wider mx-5 sm:mx-8 inline-flex items-center gap-1.5"><i data-lucide="car" class="w-3 h-3"></i> SALES & RENTALS</span>
+    </div></div>
 </div>
 
-<!-- ===== STATS ===== -->
+<!-- STATS -->
 <section class="py-14 md:py-20 bg-darker">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="50">
-                <div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1 counter" data-target="500">0</div>
-                <p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Happy Clients</p>
-            </div>
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1 counter" data-target="150">0</div>
-                <p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Cars Sold</p>
-            </div>
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="150">
-                <div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1 counter" data-target="8">0</div>
-                <p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Years Exp.</p>
-            </div>
-            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1"><span class="counter" data-target="100">0</span>%</div>
-                <p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Satisfaction</p>
-            </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6" id="statsGrid">
+            <div class="stat-card" data-aos="fade-up"><div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1" id="statCars">0</div><p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Cars Available</p></div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="80"><div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1" id="statInquiries">0</div><p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Inquiries</p></div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="160"><div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1" id="statReviews">0</div><p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Happy Clients</p></div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="240"><div class="text-2xl sm:text-3xl md:text-4xl font-black gradient-text mb-1">100%</div><p class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Satisfaction</p></div>
         </div>
     </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ===== WHY CHOOSE US ===== -->
+<!-- WHY US -->
 <section id="why-us" class="py-16 md:py-24 bg-dark relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-60 h-60 md:w-96 md:h-96 bg-primary/[0.03] rounded-full blur-3xl pointer-events-none"></div>
-
+    <div class="absolute top-0 right-0 w-60 h-60 md:w-96 md:h-96 bg-primary/[.03] rounded-full blur-3xl pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-10 md:mb-16">
-            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-3" data-aos="fade-up">Why Choose Us</p>
-            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none" data-aos="fade-up" data-aos-delay="80">
-                Beyond <span class="gradient-text font-serif italic">Ordinary</span>
-            </h2>
+            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[.25em] uppercase mb-3" data-aos="fade-up">Why Choose Us</p>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none" data-aos="fade-up" data-aos-delay="80">Beyond <span class="gradient-text font-serif italic">Ordinary</span></h2>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all duration-400" data-aos="fade-up" data-aos-delay="50">
-                <div class="feat-icon"><i data-lucide="shield-check" class="w-5 h-5 text-primary"></i></div>
-                <div>
-                    <h3 class="text-white text-base md:text-lg font-bold mb-1.5">Verified Quality</h3>
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed">120-point inspection on every vehicle. No surprises — only excellence.</p>
-                </div>
-            </div>
-            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all duration-400" data-aos="fade-up" data-aos-delay="100">
-                <div class="feat-icon"><i data-lucide="globe" class="w-5 h-5 text-primary"></i></div>
-                <div>
-                    <h3 class="text-white text-base md:text-lg font-bold mb-1.5">Direct Imports</h3>
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed">Sourced from Japan, Europe & USA. No middlemen, better prices.</p>
-                </div>
-            </div>
-            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all duration-400" data-aos="fade-up" data-aos-delay="150">
-                <div class="feat-icon"><i data-lucide="handshake" class="w-5 h-5 text-primary"></i></div>
-                <div>
-                    <h3 class="text-white text-base md:text-lg font-bold mb-1.5">Transparent Deals</h3>
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed">No hidden fees. Honest pricing and genuine service you can trust.</p>
-                </div>
-            </div>
-            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all duration-400" data-aos="fade-up" data-aos-delay="200">
-                <div class="feat-icon"><i data-lucide="clock" class="w-5 h-5 text-primary"></i></div>
-                <div>
-                    <h3 class="text-white text-base md:text-lg font-bold mb-1.5">Fast Processing</h3>
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed">Same-day paperwork. Drive home within 24 hours of deciding.</p>
-                </div>
-            </div>
-            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all duration-400" data-aos="fade-up" data-aos-delay="250">
-                <div class="feat-icon"><i data-lucide="headphones" class="w-5 h-5 text-primary"></i></div>
-                <div>
-                    <h3 class="text-white text-base md:text-lg font-bold mb-1.5">24/7 Support</h3>
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed">Always available on WhatsApp — questions answered anytime.</p>
-                </div>
-            </div>
-            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all duration-400" data-aos="fade-up" data-aos-delay="300">
-                <div class="feat-icon"><i data-lucide="car" class="w-5 h-5 text-primary"></i></div>
-                <div>
-                    <h3 class="text-white text-base md:text-lg font-bold mb-1.5">Sale & Rental</h3>
-                    <p class="text-gray-500 text-xs md:text-sm leading-relaxed">Flexible options tailored to your needs. Buy or rent with ease.</p>
-                </div>
-            </div>
+            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="50"><div class="feat-icon"><i data-lucide="shield-check" class="w-5 h-5 text-primary"></i></div><div><h3 class="text-white text-base font-bold mb-1">Verified Quality</h3><p class="text-gray-500 text-xs leading-relaxed">120-point inspection on every vehicle.</p></div></div>
+            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="100"><div class="feat-icon"><i data-lucide="globe" class="w-5 h-5 text-primary"></i></div><div><h3 class="text-white text-base font-bold mb-1">Direct Imports</h3><p class="text-gray-500 text-xs leading-relaxed">From Japan, Europe & USA. No middlemen.</p></div></div>
+            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="150"><div class="feat-icon"><i data-lucide="handshake" class="w-5 h-5 text-primary"></i></div><div><h3 class="text-white text-base font-bold mb-1">Transparent Deals</h3><p class="text-gray-500 text-xs leading-relaxed">No hidden fees. Honest pricing always.</p></div></div>
+            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="200"><div class="feat-icon"><i data-lucide="clock" class="w-5 h-5 text-primary"></i></div><div><h3 class="text-white text-base font-bold mb-1">Fast Processing</h3><p class="text-gray-500 text-xs leading-relaxed">Same-day paperwork. Drive home in 24h.</p></div></div>
+            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="250"><div class="feat-icon"><i data-lucide="headphones" class="w-5 h-5 text-primary"></i></div><div><h3 class="text-white text-base font-bold mb-1">24/7 Support</h3><p class="text-gray-500 text-xs leading-relaxed">Always available on WhatsApp.</p></div></div>
+            <div class="feat-card flex gap-4 p-5 md:p-7 rounded-2xl border border-gray-900/60 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="300"><div class="feat-icon"><i data-lucide="car" class="w-5 h-5 text-primary"></i></div><div><h3 class="text-white text-base font-bold mb-1">Sale & Rental</h3><p class="text-gray-500 text-xs leading-relaxed">Flexible options for your needs.</p></div></div>
         </div>
     </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ===== PROCESS ===== -->
+<!-- PROCESS -->
 <section id="process" class="py-16 md:py-24 bg-darker">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10 md:mb-16">
-            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-3" data-aos="fade-up">How It Works</p>
-            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none" data-aos="fade-up" data-aos-delay="80">
-                4 Simple <span class="gradient-text font-serif italic">Steps</span>
-            </h2>
+            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[.25em] uppercase mb-3" data-aos="fade-up">How It Works</p>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none" data-aos="fade-up" data-aos-delay="80">4 Simple <span class="gradient-text font-serif italic">Steps</span></h2>
         </div>
-
-        <!-- Mobile: Vertical / Desktop: Horizontal -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <div class="step-card flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="50">
-                <div class="step-num"><span class="text-primary text-lg font-black">01</span></div>
-                <div>
-                    <h3 class="text-white text-sm md:text-base font-bold mb-1">Browse & Select</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Explore our curated premium vehicle collection.</p>
-                </div>
-            </div>
-            <div class="step-card flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="100">
-                <div class="step-num"><span class="text-primary text-lg font-black">02</span></div>
-                <div>
-                    <h3 class="text-white text-sm md:text-base font-bold mb-1">WhatsApp Us</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Tap inquire for instant pricing and details.</p>
-                </div>
-            </div>
-            <div class="step-card flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="150">
-                <div class="step-num"><span class="text-primary text-lg font-black">03</span></div>
-                <div>
-                    <h3 class="text-white text-sm md:text-base font-bold mb-1">Inspect & Test</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Visit our Kigali showroom to see quality firsthand.</p>
-                </div>
-            </div>
-            <div class="step-card flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="200">
-                <div class="step-num"><span class="text-primary text-lg font-black">04</span></div>
-                <div>
-                    <h3 class="text-white text-sm md:text-base font-bold mb-1">Drive Away</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Fast paperwork, direct ownership. Same day.</p>
-                </div>
-            </div>
+            <div class="flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="50"><div class="step-num"><span class="text-primary text-lg font-black">01</span></div><div><h3 class="text-white text-sm font-bold mb-1">Browse & Select</h3><p class="text-gray-500 text-xs leading-relaxed">Explore our premium collection.</p></div></div>
+            <div class="flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="100"><div class="step-num"><span class="text-primary text-lg font-black">02</span></div><div><h3 class="text-white text-sm font-bold mb-1">Inquire</h3><p class="text-gray-500 text-xs leading-relaxed">Get instant pricing and details.</p></div></div>
+            <div class="flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="150"><div class="step-num"><span class="text-primary text-lg font-black">03</span></div><div><h3 class="text-white text-sm font-bold mb-1">Inspect & Test</h3><p class="text-gray-500 text-xs leading-relaxed">Visit our Kigali showroom.</p></div></div>
+            <div class="flex items-start gap-4 md:flex-col md:items-center md:text-center p-5 rounded-2xl border border-gray-900/40 hover:border-primary/15 transition-all" data-aos="fade-up" data-aos-delay="200"><div class="step-num"><span class="text-primary text-lg font-black">04</span></div><div><h3 class="text-white text-sm font-bold mb-1">Drive Away</h3><p class="text-gray-500 text-xs leading-relaxed">Fast paperwork, same day.</p></div></div>
         </div>
     </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ===== FLEET ===== -->
+<!-- FLEET -->
 <section id="fleet" class="py-16 md:py-24 bg-dark relative">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-80 md:w-[500px] h-80 md:h-[500px] bg-primary/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
-
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-80 md:w-[500px] h-80 md:h-[500px] bg-primary/[.02] rounded-full blur-[100px] pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-8 md:mb-12">
-            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-3" data-aos="fade-up">Our Collection</p>
-            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none mb-3" data-aos="fade-up" data-aos-delay="80">
-                The <span class="gradient-text font-serif italic">Fleet</span>
-            </h2>
-            <p class="text-gray-500 max-w-lg mx-auto text-xs md:text-sm" data-aos="fade-up" data-aos-delay="150">
-                We don't just sell cars — we deliver high-performance lifestyle upgrades.
-            </p>
+            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[.25em] uppercase mb-3" data-aos="fade-up">Our Collection</p>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none mb-3" data-aos="fade-up" data-aos-delay="80">The <span class="gradient-text font-serif italic">Fleet</span></h2>
+            <p class="text-gray-500 max-w-lg mx-auto text-xs md:text-sm" data-aos="fade-up" data-aos-delay="150">Premium vehicles curated for excellence.</p>
         </div>
-
-        <!-- Search & Filters -->
-        <div class="max-w-xl mx-auto mb-8 md:mb-10 space-y-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="max-w-xl mx-auto mb-8 space-y-4" data-aos="fade-up" data-aos-delay="200">
             <div class="relative">
-                <input type="text" id="carSearch" placeholder="Search model, feature..."
-                    class="search-box w-full rounded-2xl py-3.5 md:py-4 px-11 text-white text-sm md:text-base focus:outline-none placeholder-gray-600">
+                <input type="text" id="carSearch" placeholder="Search model, feature..." class="search-box w-full rounded-2xl py-3.5 px-11 text-white text-sm focus:outline-none placeholder-gray-600">
                 <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-primary w-4 h-4"></i>
             </div>
-            <div class="flex flex-wrap justify-center gap-1.5 md:gap-2" id="filterTabs">
+            <div class="flex flex-wrap justify-center gap-1.5" id="filterTabs">
                 <button class="filter-tab active" data-filter="all">All</button>
                 <button class="filter-tab" data-filter="suv">SUV</button>
                 <button class="filter-tab" data-filter="luxury">Luxury</button>
@@ -647,395 +284,1080 @@
                 <button class="filter-tab" data-filter="family">Family</button>
             </div>
         </div>
-
-        <!-- Grid -->
         <div id="carGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
+        <div id="carLoading" class="text-center py-16"><div class="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div><p class="text-gray-600 text-xs mt-3">Loading fleet...</p></div>
     </div>
 </section>
-
 <div class="divider"></div>
 
-<!-- ===== TESTIMONIALS ===== -->
+<!-- REVIEWS -->
 <section id="reviews" class="py-16 md:py-24 bg-darker relative overflow-hidden">
-    <div class="absolute top-10 right-10 w-48 h-48 bg-primary/[0.03] rounded-full blur-3xl pointer-events-none"></div>
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-10 md:mb-16">
-            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-3" data-aos="fade-up">Testimonials</p>
-            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none" data-aos="fade-up" data-aos-delay="80">
-                Client <span class="gradient-text font-serif italic">Voices</span>
-            </h2>
+            <p class="text-primary text-[10px] md:text-xs font-bold tracking-[.25em] uppercase mb-3" data-aos="fade-up">Testimonials</p>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none" data-aos="fade-up" data-aos-delay="80">Client <span class="gradient-text font-serif italic">Voices</span></h2>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="50">
-                <div class="flex items-center gap-0.5 mb-3">
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                </div>
-                <p class="text-gray-400 text-xs md:text-sm mb-5 leading-relaxed italic">"Bought my first SUV here. The process was seamless — from WhatsApp inquiry to driving away the same week. Unbeatable quality!"</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-yellow-600 flex items-center justify-center text-black font-black text-[11px]">JK</div>
-                    <div>
-                        <p class="text-white font-bold text-xs">Jean-Marie K.</p>
-                        <p class="text-gray-600 text-[10px]">Business Owner, Kigali</p>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="flex items-center gap-0.5 mb-3">
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                </div>
-                <p class="text-gray-400 text-xs md:text-sm mb-5 leading-relaxed italic">"Rented a car for my wedding week — spotless, luxurious, delivered on time. Professionalism is top-tier. Highly recommended!"</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-yellow-600 flex items-center justify-center text-black font-black text-[11px]">AN</div>
-                    <div>
-                        <p class="text-white font-bold text-xs">Aline N.</p>
-                        <p class="text-gray-600 text-[10px]">Event Planner, Kigali</p>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="150">
-                <div class="flex items-center gap-0.5 mb-3">
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                    <i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>
-                </div>
-                <p class="text-gray-400 text-xs md:text-sm mb-5 leading-relaxed italic">"3 cars over the years. Transparency, quality, and support are unmatched in Rwanda. They are the gold standard."</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-yellow-600 flex items-center justify-center text-black font-black text-[11px]">PM</div>
-                    <div>
-                        <p class="text-white font-bold text-xs">Patrick M.</p>
-                        <p class="text-gray-600 text-[10px]">CEO, Tech Company</p>
-                    </div>
-                </div>
-            </div>
+        <div id="reviewsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"></div>
+        <div class="text-center mt-10" data-aos="fade-up">
+            <button onclick="App.openReviewModal()" class="btn-shine bg-gray-900 border border-gray-800 text-white font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider inline-flex items-center gap-2 hover:border-primary/30">
+                <i data-lucide="pen-line" class="w-3.5 h-3.5"></i> Write a Review
+            </button>
         </div>
     </div>
 </section>
 
-<!-- ===== CTA ===== -->
-<section class="py-20 md:py-28 relative overflow-hidden bg-dark">
-    <div class="absolute inset-0 opacity-[0.06] pointer-events-none">
+<!-- SUBSCRIBE -->
+<section class="py-16 md:py-20 bg-dark">
+    <div class="max-w-xl mx-auto px-4 text-center">
+        <p class="text-primary text-[10px] md:text-xs font-bold tracking-[.25em] uppercase mb-3" data-aos="fade-up">Stay Updated</p>
+        <h2 class="text-2xl md:text-4xl font-black text-white mb-3" data-aos="fade-up" data-aos-delay="80">Get Notified on New Arrivals</h2>
+        <p class="text-gray-500 text-xs md:text-sm mb-6" data-aos="fade-up" data-aos-delay="120">Be the first to know when new premium vehicles arrive.</p>
+        <form id="subForm" class="flex flex-col sm:flex-row gap-3" data-aos="fade-up" data-aos-delay="200">
+            <input type="text" name="name" placeholder="Your name" required class="admin-input flex-1 text-sm">
+            <input type="tel" name="phone" placeholder="Phone number" required class="admin-input flex-1 text-sm">
+            <button type="submit" class="btn-shine bg-primary text-darker font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 md:py-28 relative overflow-hidden bg-darker">
+    <div class="absolute inset-0 opacity-[.06] pointer-events-none">
         <div class="cta-ring w-[300px] h-[300px] md:w-[600px] md:h-[600px]"></div>
         <div class="cta-ring w-[200px] h-[200px] md:w-[400px] md:h-[400px]"></div>
-        <div class="cta-ring w-[100px] h-[100px] md:w-[200px] md:h-[200px]"></div>
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none"></div>
-
     <div class="max-w-3xl mx-auto px-5 text-center relative z-10">
-        <p class="text-primary text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-3" data-aos="fade-up">Ready?</p>
-        <h2 class="text-3xl sm:text-4xl md:text-6xl font-black text-white uppercase tracking-tight leading-none mb-5" data-aos="fade-up" data-aos-delay="80">
-            Your Dream Car<br><span class="gradient-text font-serif italic">Awaits</span>
-        </h2>
-        <p class="text-gray-500 text-sm md:text-base mb-8 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="150">
-            Join hundreds of satisfied clients. Contact us today.
-        </p>
+        <h2 class="text-3xl sm:text-4xl md:text-6xl font-black text-white uppercase tracking-tight leading-none mb-5" data-aos="fade-up">Your Dream Car<br><span class="gradient-text font-serif italic">Awaits</span></h2>
+        <p class="text-gray-500 text-sm mb-8 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="100">Contact us today and drive away in style.</p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3" data-aos="fade-up" data-aos-delay="200">
-            <a href="https://wa.me/250786075521" target="_blank"
-                class="btn-shine w-full sm:w-auto px-8 py-4 bg-primary text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-wider">
-                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Us
-            </a>
-            <a href="tel:+250786075521"
-                class="btn-shine w-full sm:w-auto px-8 py-4 bg-white text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs sm:text-sm uppercase tracking-wider">
-                <i data-lucide="phone" class="w-4 h-4"></i> Call Direct
-            </a>
+            <a href="https://wa.me/250786075521" target="_blank" class="btn-shine w-full sm:w-auto px-8 py-4 bg-primary text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs uppercase tracking-wider"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Us</a>
+            <a href="tel:+250786075521" class="btn-shine w-full sm:w-auto px-8 py-4 bg-white text-darker font-black rounded-full flex items-center justify-center gap-2.5 text-xs uppercase tracking-wider"><i data-lucide="phone" class="w-4 h-4"></i> Call Direct</a>
         </div>
     </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
-<footer class="bg-black pt-14 md:pt-20 pb-8 border-t border-primary/10 relative">
+<!-- FOOTER -->
+<footer class="bg-black pt-14 md:pt-20 pb-8 border-t border-primary/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 mb-12">
-            <!-- Brand -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             <div>
                 <div class="flex items-center gap-2.5 mb-4">
                     <img src="https://i.imgur.com/TgSy20k.jpeg" alt="Logo" class="w-11 h-11 object-cover rounded-full border-2 border-primary shadow-lg">
-                    <div>
-                        <span class="text-white font-black text-sm uppercase tracking-tight block leading-none">Car Deals Direct</span>
-                        <span class="text-primary text-[8px] font-bold tracking-[0.3em] uppercase">Kigali • Rwanda</span>
-                    </div>
+                    <div><span class="text-white font-black text-sm uppercase tracking-tight block leading-none">Car Deals Direct</span><span class="text-primary text-[8px] font-bold tracking-[.3em] uppercase">Kigali • Rwanda</span></div>
                 </div>
                 <p class="text-gray-600 text-xs leading-relaxed">Rwanda's premier destination for premium auto sales & rentals.</p>
             </div>
-            <!-- Links -->
             <div>
                 <h4 class="text-white font-bold uppercase tracking-wider text-[11px] mb-4">Quick Links</h4>
                 <div class="space-y-2.5">
-                    <a href="#home" class="block text-gray-500 hover:text-primary transition-colors text-xs">Home</a>
-                    <a href="#fleet" class="block text-gray-500 hover:text-primary transition-colors text-xs">Our Fleet</a>
-                    <a href="#why-us" class="block text-gray-500 hover:text-primary transition-colors text-xs">Why Choose Us</a>
-                    <a href="#process" class="block text-gray-500 hover:text-primary transition-colors text-xs">How It Works</a>
-                    <a href="#reviews" class="block text-gray-500 hover:text-primary transition-colors text-xs">Reviews</a>
+                    <a href="#home" class="block text-gray-500 hover:text-primary text-xs">Home</a>
+                    <a href="#fleet" class="block text-gray-500 hover:text-primary text-xs">Fleet</a>
+                    <a href="#why-us" class="block text-gray-500 hover:text-primary text-xs">Why Us</a>
+                    <a href="#reviews" class="block text-gray-500 hover:text-primary text-xs">Reviews</a>
                 </div>
             </div>
-            <!-- Contact -->
             <div>
                 <h4 class="text-white font-bold uppercase tracking-wider text-[11px] mb-4">Contact</h4>
                 <div class="space-y-3">
-                    <a href="tel:+250786075521" class="flex items-center gap-2.5 text-gray-500 hover:text-primary transition-colors text-xs">
-                        <i data-lucide="phone" class="w-3.5 h-3.5 text-primary flex-shrink-0"></i> +250 786 075 521
-                    </a>
-                    <a href="https://wa.me/250786075521" target="_blank" class="flex items-center gap-2.5 text-gray-500 hover:text-primary transition-colors text-xs">
-                        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-primary flex-shrink-0"></i> WhatsApp Chat
-                    </a>
-                    <div class="flex items-center gap-2.5 text-gray-500 text-xs">
-                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-primary flex-shrink-0"></i> Kigali, Rwanda
-                    </div>
-                    <div class="flex items-center gap-2.5 text-gray-500 text-xs">
-                        <i data-lucide="mail" class="w-3.5 h-3.5 text-primary flex-shrink-0"></i> directdeals@kigali.com
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <a href="https://whatsapp.com/channel/0029VbB5YllI7BeGRhqGPz1S" target="_blank"
-                        class="inline-flex items-center gap-1.5 bg-primary/10 border border-primary/15 text-primary text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-primary/20 transition-colors">
-                        <i data-lucide="rss" class="w-3 h-3"></i> Join WhatsApp Channel
-                    </a>
+                    <a href="tel:+250786075521" class="flex items-center gap-2 text-gray-500 hover:text-primary text-xs"><i data-lucide="phone" class="w-3.5 h-3.5 text-primary"></i> +250 786 075 521</a>
+                    <div class="flex items-center gap-2 text-gray-500 text-xs"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-primary"></i> Kigali, Rwanda</div>
+                    <div class="flex items-center gap-2 text-gray-500 text-xs"><i data-lucide="mail" class="w-3.5 h-3.5 text-primary"></i> directdeals@kigali.com</div>
                 </div>
             </div>
         </div>
-
         <div class="divider mb-6"></div>
-
         <div class="flex flex-col sm:flex-row justify-between items-center text-gray-700 text-[10px] gap-3">
             <p>&copy; 2024 Car Deals Direct Kigali. All rights reserved.</p>
             <div class="flex gap-5">
-                <a href="#" class="hover:text-primary transition-colors">Privacy</a>
-                <a href="#" class="hover:text-primary transition-colors">Terms</a>
+                <button onclick="App.showAdmin()" class="hover:text-primary transition-colors">Admin</button>
+                <a href="#" class="hover:text-primary">Terms</a>
             </div>
         </div>
     </div>
 </footer>
 
-</div><!-- End page-wrap -->
+</div><!-- End publicSite -->
 
-<!-- ===== FLOATING WHATSAPP ===== -->
-<a href="https://wa.me/250786075521" target="_blank"
-    class="wa-float fixed bottom-4 right-4 z-50 bg-[#25D366] text-white p-3.5 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.35)] active:scale-95 transition-transform flex items-center justify-center group">
+<!-- ========== MODALS ========== -->
+
+<!-- Car Detail Modal -->
+<div class="modal-overlay" id="carDetailModal">
+    <div class="modal-content modal-lg" id="carDetailContent"></div>
+</div>
+
+<!-- Inquiry Modal -->
+<div class="modal-overlay" id="inquiryModal">
+    <div class="modal-content">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-white font-black text-lg uppercase">Inquire Now</h3>
+                <button onclick="App.closeModal('inquiryModal')" class="text-gray-500 hover:text-white p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-primary text-xs font-bold mb-4" id="inquiryCarTitle"></p>
+            <form id="inquiryForm" class="space-y-4">
+                <input type="hidden" id="inquiryCarId">
+                <input type="hidden" id="inquiryCarTitleVal">
+                <input type="text" name="name" placeholder="Full Name *" required class="admin-input">
+                <input type="tel" name="phone" placeholder="Phone Number *" required class="admin-input">
+                <input type="email" name="email" placeholder="Email (optional)" class="admin-input">
+                <textarea name="message" placeholder="Your message..." rows="3" class="admin-input" style="resize:none"></textarea>
+                <button type="submit" class="btn-shine w-full bg-primary text-darker font-black py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4"></i> Send Inquiry
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Modal -->
+<div class="modal-overlay" id="bookingModal">
+    <div class="modal-content">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-white font-black text-lg uppercase">Book Test Drive</h3>
+                <button onclick="App.closeModal('bookingModal')" class="text-gray-500 hover:text-white p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-primary text-xs font-bold mb-4" id="bookingCarTitle"></p>
+            <form id="bookingForm" class="space-y-4">
+                <input type="hidden" id="bookingCarId">
+                <input type="hidden" id="bookingCarTitleVal">
+                <input type="text" name="name" placeholder="Full Name *" required class="admin-input">
+                <input type="tel" name="phone" placeholder="Phone Number *" required class="admin-input">
+                <input type="date" name="date" required class="admin-input">
+                <select name="time" required class="admin-input admin-select">
+                    <option value="">Preferred Time *</option>
+                    <option>Morning (8AM-12PM)</option>
+                    <option>Afternoon (12PM-4PM)</option>
+                    <option>Evening (4PM-6PM)</option>
+                </select>
+                <textarea name="notes" placeholder="Additional notes..." rows="2" class="admin-input" style="resize:none"></textarea>
+                <button type="submit" class="btn-shine w-full bg-primary text-darker font-black py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                    <i data-lucide="calendar-check" class="w-4 h-4"></i> Book Now
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal-overlay" id="reviewModal">
+    <div class="modal-content">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-white font-black text-lg uppercase">Write a Review</h3>
+                <button onclick="App.closeModal('reviewModal')" class="text-gray-500 hover:text-white p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="reviewForm" class="space-y-4">
+                <input type="text" name="name" placeholder="Your Name *" required class="admin-input">
+                <input type="text" name="role" placeholder="Your Title (e.g. Business Owner)" class="admin-input">
+                <div>
+                    <label class="text-gray-400 text-xs mb-2 block">Rating *</label>
+                    <div class="flex gap-1" id="ratingStars">
+                        <button type="button" data-r="1" class="text-primary"><i data-lucide="star" class="w-6 h-6 fill-primary"></i></button>
+                        <button type="button" data-r="2" class="text-primary"><i data-lucide="star" class="w-6 h-6 fill-primary"></i></button>
+                        <button type="button" data-r="3" class="text-primary"><i data-lucide="star" class="w-6 h-6 fill-primary"></i></button>
+                        <button type="button" data-r="4" class="text-primary"><i data-lucide="star" class="w-6 h-6 fill-primary"></i></button>
+                        <button type="button" data-r="5" class="text-primary"><i data-lucide="star" class="w-6 h-6 fill-primary"></i></button>
+                    </div>
+                    <input type="hidden" id="ratingVal" value="5">
+                </div>
+                <textarea name="comment" placeholder="Share your experience... *" rows="4" required class="admin-input" style="resize:none"></textarea>
+                <button type="submit" class="btn-shine w-full bg-primary text-darker font-black py-3.5 rounded-xl text-sm uppercase tracking-wider">Submit Review</button>
+                <p class="text-gray-600 text-[10px] text-center">Your review will be published after approval.</p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ========== ADMIN PANEL ========== -->
+<div class="admin-wrap hidden" id="adminPanel">
+    <!-- Admin Login -->
+    <div id="adminLogin" class="min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-sm w-full">
+            <div class="text-center mb-8">
+                <img src="https://i.imgur.com/TgSy20k.jpeg" alt="Logo" class="w-16 h-16 object-cover rounded-full border-2 border-primary mx-auto mb-4 logo-glow">
+                <h2 class="text-white font-black text-xl uppercase">Admin Panel</h2>
+                <p class="text-gray-500 text-xs mt-1">Car Deals Direct Kigali</p>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <input type="password" id="adminPwd" placeholder="Enter admin password" required class="admin-input text-center tracking-widest">
+                <button type="submit" class="btn-shine w-full bg-primary text-darker font-black py-3.5 rounded-xl text-sm uppercase tracking-wider">Login</button>
+                <button type="button" onclick="App.hideAdmin()" class="w-full text-gray-600 text-xs hover:text-primary py-2">← Back to Website</button>
+            </form>
+            <div class="mt-8 text-center">
+                <button onclick="App.showSetupSQL()" class="text-gray-700 text-[10px] hover:text-primary transition-colors underline">Database Setup Guide</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Main -->
+    <div id="adminMain" class="hidden">
+        <!-- Admin Top Bar -->
+        <div class="sticky top-0 z-40 bg-black/95 backdrop-blur-xl border-b border-primary/10">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex items-center justify-between h-14">
+                    <div class="flex items-center gap-2">
+                        <img src="https://i.imgur.com/TgSy20k.jpeg" alt="" class="w-8 h-8 rounded-full border border-primary object-cover">
+                        <span class="text-white font-bold text-xs uppercase hidden sm:block">Admin Panel</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="App.hideAdmin()" class="admin-btn bg-gray-900 border border-gray-800 text-gray-400 hover:text-white text-[10px]">
+                            <i data-lucide="external-link" class="w-3 h-3"></i> Site
+                        </button>
+                        <button onclick="App.adminLogout()" class="admin-btn bg-red-900/30 border border-red-900/50 text-red-400 text-[10px]">
+                            <i data-lucide="log-out" class="w-3 h-3"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="sticky top-14 z-30 bg-darker/95 backdrop-blur-xl border-b border-gray-900">
+            <div class="max-w-7xl mx-auto px-4 overflow-x-auto">
+                <div class="flex gap-1 min-w-max py-1">
+                    <button class="admin-tab active" data-tab="dashboard" onclick="App.adminTab('dashboard')">📊 Dashboard</button>
+                    <button class="admin-tab" data-tab="cars" onclick="App.adminTab('cars')">🚗 Cars</button>
+                    <button class="admin-tab" data-tab="inquiries" onclick="App.adminTab('inquiries')">📩 Inquiries</button>
+                    <button class="admin-tab" data-tab="bookings" onclick="App.adminTab('bookings')">📅 Bookings</button>
+                    <button class="admin-tab" data-tab="adminReviews" onclick="App.adminTab('adminReviews')">⭐ Reviews</button>
+                    <button class="admin-tab" data-tab="subscribers" onclick="App.adminTab('subscribers')">👥 Subscribers</button>
+                    <button class="admin-tab" data-tab="settings" onclick="App.adminTab('settings')">⚙️ Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="max-w-7xl mx-auto px-4 py-6" id="adminContent"></div>
+    </div>
+</div>
+
+<!-- Setup SQL Modal -->
+<div class="modal-overlay" id="setupModal">
+    <div class="modal-content modal-lg">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-white font-black text-lg">Database Setup</h3>
+                <button onclick="App.closeModal('setupModal')" class="text-gray-500 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-gray-400 text-xs mb-4">Copy this SQL and run it in your <a href="https://supabase.com/dashboard" target="_blank" class="text-primary underline">Supabase SQL Editor</a>:</p>
+            <div class="relative">
+                <pre id="setupSQL" class="bg-black rounded-xl p-4 text-[10px] text-green-400 overflow-x-auto max-h-[50vh] leading-relaxed border border-gray-900"></pre>
+                <button onclick="App.copySQL()" class="absolute top-2 right-2 bg-primary text-darker text-[10px] font-bold px-3 py-1.5 rounded-lg">Copy SQL</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Buttons -->
+<a href="https://wa.me/250786075521" target="_blank" class="wa-float fixed bottom-4 right-4 z-50 bg-[#25D366] text-white p-3.5 rounded-full shadow-[0_0_20px_rgba(37,211,102,.35)] active:scale-95 transition-transform flex items-center justify-center">
     <i data-lucide="message-circle" class="w-6 h-6"></i>
-    <span class="absolute right-full mr-2 bg-white text-gray-800 text-[10px] font-bold px-2.5 py-1.5 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none hidden sm:block">
-        Chat with us!
-    </span>
 </a>
-
-<!-- ===== BACK TO TOP ===== -->
-<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"
-    class="fixed bottom-4 left-4 z-50 bg-gray-900 border border-gray-800 text-primary p-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-all duration-300 hover:bg-primary hover:text-darker hover:border-primary active:scale-90">
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-4 left-4 z-50 bg-gray-900 border border-gray-800 text-primary p-2.5 rounded-full shadow-xl opacity-0 pointer-events-none transition-all hover:bg-primary hover:text-darker active:scale-90">
     <i data-lucide="chevron-up" class="w-4 h-4"></i>
 </button>
 
-<!-- ===== SCRIPTS ===== -->
+<!-- ========== JAVASCRIPT ========== -->
 <script>
-    lucide.createIcons();
+const SUPABASE_URL = 'https://ngnqkbrwncthhxljipma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5nbnFrYnJ3bmN0aGh4bGppcG1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3MDg1NjQsImV4cCI6MjA4OTI4NDU2NH0.PVkCCWaR0xWIADil9xoMPN_lSULGSgyCgKgazBVXWa8';
 
-    // AOS — shorter on mobile
-    AOS.init({
-        duration: 600,
-        easing: 'ease-out-cubic',
-        once: true,
-        offset: 30,
-        disable: false,
-    });
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Preloader
-    window.addEventListener('load', () => {
-        setTimeout(() => document.getElementById('preloader').classList.add('done'), 2000);
-    });
+const SETUP_SQL = `-- Car Deals Direct Kigali - Database Setup
+-- Run this in Supabase SQL Editor (supabase.com/dashboard)
 
-    // Particles
-    (function(){
-        const c = document.getElementById('particles');
-        const count = window.innerWidth < 768 ? 12 : 25;
-        for(let i=0; i<count; i++){
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            const size = Math.random()*2.5+1;
-            p.style.cssText = `
-                left:${Math.random()*100}%;
-                width:${size}px; height:${size}px;
-                animation-duration:${Math.random()*12+8}s;
-                animation-delay:${Math.random()*10}s;
-                opacity:${Math.random()*0.4+0.1};
-            `;
-            c.appendChild(p);
+CREATE TABLE IF NOT EXISTS cars (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  price NUMERIC,
+  rent_price NUMERIC,
+  price_type TEXT DEFAULT 'both',
+  category TEXT DEFAULT 'luxury',
+  tags TEXT[] DEFAULT '{}',
+  image_url TEXT,
+  featured BOOLEAN DEFAULT false,
+  available BOOLEAN DEFAULT true,
+  mileage TEXT,
+  year INTEGER,
+  fuel_type TEXT,
+  transmission TEXT,
+  color TEXT,
+  views INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE cars DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS inquiries (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  car_id UUID REFERENCES cars(id) ON DELETE SET NULL,
+  car_title TEXT,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT,
+  message TEXT,
+  status TEXT DEFAULT 'new',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE inquiries DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS bookings (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  car_id UUID REFERENCES cars(id) ON DELETE SET NULL,
+  car_title TEXT,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  preferred_date DATE,
+  preferred_time TEXT,
+  notes TEXT,
+  status TEXT DEFAULT 'pending',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE bookings DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  role TEXT,
+  rating INTEGER DEFAULT 5,
+  comment TEXT NOT NULL,
+  approved BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE reviews DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS subscribers (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT,
+  phone TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE subscribers DISABLE ROW LEVEL SECURITY;
+
+CREATE TABLE IF NOT EXISTS site_settings (
+  id INTEGER PRIMARY KEY DEFAULT 1,
+  admin_password TEXT DEFAULT 'admin123',
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE site_settings DISABLE ROW LEVEL SECURITY;
+INSERT INTO site_settings (id, admin_password) VALUES (1, 'admin123') ON CONFLICT (id) DO NOTHING;
+
+-- Sample Cars
+INSERT INTO cars (title, description, price, rent_price, category, tags, image_url, featured, mileage, year, fuel_type, transmission, color) VALUES
+('Luxury Executive','Premium executive sedan with full luxury package.',35000000,150000,'luxury',ARRAY['V8 Engine','Leather','Panoramic'],'https://i.imgur.com/KRmHOGK.jpeg',true,'45,000 km',2021,'Petrol','Automatic','Black'),
+('Premium SUV','Powerful SUV with 4WD and hybrid technology.',42000000,200000,'suv',ARRAY['4WD','Heated Seats','Hybrid'],'https://i.imgur.com/t8A3ISr.jpeg',true,'32,000 km',2022,'Hybrid','Automatic','White'),
+('Business Elite','Safety meets sophistication for business.',28000000,120000,'luxury',ARRAY['Automatic','Cruise Control','Safe'],'https://i.imgur.com/06BnFeJ.jpeg',false,'55,000 km',2020,'Petrol','Automatic','Silver'),
+('Adventure Master','Built for the road less traveled.',38000000,180000,'suv',ARRAY['Off-road','Sunroof','Tow Bar'],'https://i.imgur.com/M3eqcl9.jpeg',true,'28,000 km',2022,'Diesel','Automatic','Green'),
+('Urban Dynamic','Smart city driving with modern tech.',22000000,80000,'family',ARRAY['Bluetooth','Camera','Sensor'],'https://i.imgur.com/dquZYCt.jpeg',false,'40,000 km',2021,'Petrol','Automatic','Blue'),
+('Sport Performance','Track-inspired performance for the street.',55000000,300000,'sport',ARRAY['Turbo','F1 Paddle','Sport Mode'],'https://i.imgur.com/fdt8WE0.jpeg',true,'15,000 km',2023,'Petrol','Automatic','Red'),
+('Family Voyager','Spacious family companion.',30000000,130000,'family',ARRAY['7-Seater','Climate Control'],'https://i.imgur.com/wkLmESb.jpeg',false,'50,000 km',2020,'Diesel','Automatic','Gray'),
+('Eco-Efficiency','Maximum efficiency, minimal impact.',25000000,90000,'electric',ARRAY['Fuel Saver','Low Mileage'],'https://i.imgur.com/pHXgK5S.jpeg',false,'20,000 km',2022,'Hybrid','CVT','White'),
+('Corporate Classic','Timeless elegance.',32000000,140000,'luxury',ARRAY['Park Assist','Keyless Go'],'https://i.imgur.com/O993p8L.jpeg',false,'38,000 km',2021,'Petrol','Automatic','Black'),
+('Rugged Explorer','Expedition-ready vehicle.',45000000,220000,'suv',ARRAY['Winch Ready','LED Lights'],'https://i.imgur.com/ToHOiTS.jpeg',false,'25,000 km',2022,'Diesel','Manual','White'),
+('Smart Commuter','Efficient daily commuter.',18000000,60000,'family',ARRAY['Compact','Easy Park'],'https://i.imgur.com/6dGJXdq.jpeg',false,'35,000 km',2021,'Petrol','Automatic','Red'),
+('The President','VIP-level luxury and security.',85000000,500000,'luxury',ARRAY['Armored','VIP Glass'],'https://i.imgur.com/h9kJzpo.jpeg',true,'10,000 km',2023,'Petrol','Automatic','Black'),
+('Mountain Peak','Heavy-duty meets comfort.',40000000,190000,'suv',ARRAY['Heavy Duty','Diff-Lock'],'https://i.imgur.com/mzx4oMM.jpeg',false,'30,000 km',2021,'Diesel','Automatic','Silver'),
+('Modern Design','Next-gen electric driving.',48000000,250000,'electric',ARRAY['Electric','Smart Interface'],'https://i.imgur.com/fYi0MYb.png',true,'5,000 km',2024,'Electric','Automatic','White'),
+('Daily Comfort','Comfort-focused daily driver.',20000000,70000,'family',ARRAY['Soft Suspension','Multimedia'],'https://i.imgur.com/wvyYsvy.png',false,'42,000 km',2020,'Petrol','Automatic','Blue');
+
+-- Sample Reviews
+INSERT INTO reviews (name, role, rating, comment, approved) VALUES
+('Jean-Marie K.','Business Owner, Kigali',5,'Bought my first SUV here. Seamless process from inquiry to driving away. Unbeatable quality!',true),
+('Aline N.','Event Planner, Kigali',5,'Rented a car for my wedding — spotless, luxurious, delivered on time. Top-tier professionalism!',true),
+('Patrick M.','CEO, Tech Company',5,'3 cars over the years. Transparency and quality are unmatched in Rwanda.',true);`;
+
+// ===== APP =====
+const App = {
+    cars: [],
+    reviews: [],
+    activeCat: 'all',
+    adminLoggedIn: false,
+    currentAdminTab: 'dashboard',
+    dbReady: false,
+    selectedRating: 5,
+
+    async init() {
+        lucide.createIcons();
+        AOS.init({ duration:600, easing:'ease-out-cubic', once:true, offset:30 });
+        this.setupParticles();
+        this.setupNav();
+        this.setupMobile();
+        this.setupForms();
+        this.setupFilters();
+        this.setupRating();
+        document.getElementById('setupSQL').textContent = SETUP_SQL;
+        await this.checkDB();
+        if(this.dbReady) {
+            await Promise.all([this.loadCars(), this.loadReviews(), this.loadStats()]);
         }
-    })();
+        setTimeout(()=>document.getElementById('preloader').classList.add('done'),2000);
+    },
 
-    // Navbar scroll & back-to-top
-    const nav = document.getElementById('navbar');
-    const btt = document.getElementById('btt');
-    let lastScroll = 0;
-    window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        if(y > 60) { nav.classList.add('scrolled'); btt.style.opacity='1'; btt.style.pointerEvents='auto'; }
-        else { nav.classList.remove('scrolled'); btt.style.opacity='0'; btt.style.pointerEvents='none'; }
-        lastScroll = y;
-    }, { passive: true });
-
-    // Mobile menu
-    const mobBtn = document.getElementById('mobBtn');
-    const mobMenu = document.getElementById('mobMenu');
-    let mobOpen = false;
-    mobBtn.addEventListener('click', () => {
-        mobOpen = !mobOpen;
-        mobMenu.classList.toggle('hidden');
-        requestAnimationFrame(() => {
-            mobMenu.querySelector('.mob-menu-inner').classList.toggle('open');
-        });
-    });
-    document.querySelectorAll('.mob-link').forEach(l => {
-        l.addEventListener('click', () => {
-            mobMenu.classList.add('hidden');
-            mobMenu.querySelector('.mob-menu-inner').classList.remove('open');
-            mobOpen = false;
-        });
-    });
-
-    // Counter animation
-    function animateCounters(){
-        document.querySelectorAll('.counter').forEach(el => {
-            const target = +el.dataset.target;
-            const dur = 1800;
-            const start = performance.now();
-            function tick(now){
-                const p = Math.min((now-start)/dur, 1);
-                const eased = 1 - Math.pow(1-p, 3);
-                el.textContent = Math.floor(eased * target);
-                if(p<1) requestAnimationFrame(tick);
-                else el.textContent = target;
+    // === DB ===
+    async checkDB() {
+        try {
+            const {error} = await db.from('cars').select('id').limit(1);
+            this.dbReady = !error;
+            if(error) {
+                document.getElementById('carLoading').innerHTML = `
+                    <div class="text-center">
+                        <i data-lucide="database" class="w-12 h-12 text-gray-700 mx-auto mb-3"></i>
+                        <p class="text-gray-500 text-sm font-bold mb-2">Database Not Set Up</p>
+                        <p class="text-gray-600 text-xs mb-4">Run the setup SQL in your Supabase dashboard first.</p>
+                        <button onclick="App.showSetupSQL()" class="btn-shine bg-primary text-darker font-bold px-5 py-2.5 rounded-xl text-xs uppercase">View Setup Guide</button>
+                    </div>`;
+                lucide.createIcons();
             }
-            requestAnimationFrame(tick);
-        });
-    }
-    const cObs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if(e.isIntersecting){ animateCounters(); cObs.disconnect(); }});
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.stat-card').forEach(el => cObs.observe(el));
+        } catch(e) { this.dbReady = false; }
+    },
 
-    // Car data
-    const cars = [
-        { img:"https://i.imgur.com/KRmHOGK.jpeg", title:"Luxury Executive", tags:["V8 Engine","Leather","Panoramic"], cat:"luxury" },
-        { img:"https://i.imgur.com/t8A3ISr.jpeg", title:"Premium SUV", tags:["4WD","Heated Seats","Hybrid"], cat:"suv" },
-        { img:"https://i.imgur.com/06BnFeJ.jpeg", title:"Business Elite", tags:["Automatic","Cruise Control","Safe"], cat:"luxury" },
-        { img:"https://i.imgur.com/M3eqcl9.jpeg", title:"Adventure Master", tags:["Off-road","Sunroof","Tow Bar"], cat:"suv" },
-        { img:"https://i.imgur.com/dquZYCt.jpeg", title:"Urban Dynamic", tags:["Bluetooth","Camera","Sensor"], cat:"family" },
-        { img:"https://i.imgur.com/fdt8WE0.jpeg", title:"Sport Performance", tags:["Turbo","F1 Paddle","Sport Mode"], cat:"sport" },
-        { img:"https://i.imgur.com/wkLmESb.jpeg", title:"Family Voyager", tags:["7-Seater","Climate Control"], cat:"family" },
-        { img:"https://i.imgur.com/pHXgK5S.jpeg", title:"Eco-Efficiency", tags:["Fuel Saver","Low Mileage"], cat:"electric" },
-        { img:"https://i.imgur.com/O993p8L.jpeg", title:"Corporate Classic", tags:["Park Assist","Keyless Go"], cat:"luxury" },
-        { img:"https://i.imgur.com/ToHOiTS.jpeg", title:"Rugged Explorer", tags:["Winch Ready","LED Lights"], cat:"suv" },
-        { img:"https://i.imgur.com/6dGJXdq.jpeg", title:"Smart Commuter", tags:["Compact","Easy Park"], cat:"family" },
-        { img:"https://i.imgur.com/h9kJzpo.jpeg", title:"The President", tags:["Armored","VIP Glass"], cat:"luxury" },
-        { img:"https://i.imgur.com/mzx4oMM.jpeg", title:"Mountain Peak", tags:["Heavy Duty","Diff-Lock"], cat:"suv" },
-        { img:"https://i.imgur.com/fYi0MYb.png", title:"Modern Design", tags:["Electric","Smart Interface"], cat:"electric" },
-        { img:"https://i.imgur.com/wvyYsvy.png", title:"Daily Comfort", tags:["Soft Susp","Multimedia"], cat:"family" }
-    ];
+    // === LOAD DATA ===
+    async loadCars() {
+        try {
+            const {data,error} = await db.from('cars').select('*').eq('available',true).order('featured',{ascending:false}).order('created_at',{ascending:false});
+            if(!error && data) { this.cars = data; this.renderCars(); }
+            document.getElementById('carLoading').classList.add('hidden');
+        } catch(e) { console.error(e); }
+    },
 
-    let activeCat = 'all';
+    async loadReviews() {
+        try {
+            const {data} = await db.from('reviews').select('*').eq('approved',true).order('created_at',{ascending:false}).limit(6);
+            if(data) { this.reviews = data; this.renderReviews(); }
+        } catch(e) {}
+    },
 
-    function render(search='', cat='all'){
+    async loadStats() {
+        try {
+            const [{count:cc},{count:ic},{count:rc}] = await Promise.all([
+                db.from('cars').select('*',{count:'exact',head:true}).eq('available',true),
+                db.from('inquiries').select('*',{count:'exact',head:true}),
+                db.from('reviews').select('*',{count:'exact',head:true}).eq('approved',true)
+            ]);
+            this.animateNum('statCars', cc||0);
+            this.animateNum('statInquiries', ic||0);
+            this.animateNum('statReviews', rc||0);
+        } catch(e) {}
+    },
+
+    animateNum(id, target) {
+        const el = document.getElementById(id);
+        if(!el) return;
+        const dur = 1500, start = performance.now();
+        function tick(now) {
+            const p = Math.min((now-start)/dur,1), eased = 1-Math.pow(1-p,3);
+            el.textContent = Math.floor(eased*target);
+            if(p<1) requestAnimationFrame(tick);
+            else el.textContent = target + '+';
+        }
+        requestAnimationFrame(tick);
+    },
+
+    // === RENDER CARS ===
+    renderCars(search='', cat='all') {
         const g = document.getElementById('carGrid');
         g.innerHTML = '';
-
-        const list = cars.filter(c => {
-            const s = c.title.toLowerCase().includes(search.toLowerCase()) || c.tags.some(t=>t.toLowerCase().includes(search.toLowerCase()));
-            const f = cat==='all' || c.cat===cat;
+        const list = this.cars.filter(c => {
+            const s = !search || c.title.toLowerCase().includes(search.toLowerCase()) || (c.tags||[]).some(t=>t.toLowerCase().includes(search.toLowerCase()));
+            const f = cat==='all' || c.category===cat;
             return s && f;
         });
-
-        if(!list.length){
-            g.innerHTML = `
-                <div class="col-span-full text-center py-16">
-                    <i data-lucide="search-x" class="w-12 h-12 text-gray-800 mx-auto mb-3"></i>
-                    <p class="text-gray-600 text-sm">No vehicles found.</p>
-                    <p class="text-gray-700 text-xs mt-1">Try a different search or filter.</p>
-                </div>`;
-            lucide.createIcons();
-            return;
+        if(!list.length) {
+            g.innerHTML = `<div class="col-span-full text-center py-16"><i data-lucide="search-x" class="w-12 h-12 text-gray-800 mx-auto mb-3"></i><p class="text-gray-600 text-sm">No vehicles found.</p></div>`;
+            lucide.createIcons(); return;
         }
-
-        list.forEach((car, i) => {
-            const id = `CDD-${String(cars.indexOf(car)+1).padStart(3,'0')}`;
-            const wa = `https://wa.me/250786075521?text=Hello! I'm interested in *${car.title}* (${id}). Can I get pricing and details?`;
-            const td = `https://wa.me/250786075521?text=Hello! I'd like to book a test drive for *${car.title}* (${id}).`;
-            const d = (i%3)*60;
-
-            g.insertAdjacentHTML('beforeend', `
-            <div class="luxury-card flex flex-col h-full relative" data-aos="fade-up" data-aos-delay="${d}">
+        list.forEach((car,i)=> {
+            const pr = car.price ? this.fmtPrice(car.price) : 'Contact us';
+            const rp = car.rent_price ? this.fmtPrice(car.rent_price)+'/day' : '';
+            g.insertAdjacentHTML('beforeend',`
+            <div class="luxury-card flex flex-col h-full relative" data-aos="fade-up" data-aos-delay="${(i%3)*60}" onclick="App.openCarDetail('${car.id}')">
                 <div class="relative h-48 sm:h-56 md:h-64 overflow-hidden bg-gray-900 shimmer">
-                    <img src="${car.img}" alt="${car.title}" loading="lazy"
-                        class="card-img w-full h-full object-cover"
-                        onload="this.parentElement.classList.remove('shimmer')">
+                    <img src="${car.image_url||'https://via.placeholder.com/600x400/111827/f59e0b?text=No+Image'}" alt="${car.title}" loading="lazy" class="card-img w-full h-full object-cover" onload="this.parentElement.classList.remove('shimmer')">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                    <div class="absolute top-3 left-3">
-                        <span class="bg-primary text-black text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow badge-pulse">Sale / Rent</span>
+                    <div class="absolute top-3 left-3 flex gap-1.5">
+                        <span class="bg-primary text-black text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow badge-pulse">${car.price_type||'both'}</span>
+                        ${car.featured?'<span class="bg-white/20 backdrop-blur text-white text-[9px] font-bold px-2 py-1 rounded-full">★ Featured</span>':''}
                     </div>
-                    <div class="absolute top-3 right-3">
-                        <span class="bg-black/40 backdrop-blur-xl text-white text-[9px] font-bold px-2.5 py-1 rounded-full border border-white/10 uppercase tracking-wider">${id}</span>
-                    </div>
-                    <div class="absolute bottom-3 left-3">
-                        <span class="bg-white/10 backdrop-blur-md text-white text-[9px] font-bold px-2.5 py-1 rounded-full border border-white/10 capitalize">${car.cat}</span>
-                    </div>
+                    <div class="absolute bottom-3 left-3"><span class="bg-white/10 backdrop-blur-md text-white text-[9px] font-bold px-2.5 py-1 rounded-full border border-white/10 capitalize">${car.category||''}</span></div>
                 </div>
-                <div class="p-5 md:p-6 flex flex-col flex-grow">
-                    <h3 class="text-base md:text-lg font-black text-white mb-2 uppercase tracking-tight">${car.title}</h3>
-                    <div class="flex flex-wrap gap-x-3 gap-y-1.5 mb-5">
-                        ${car.tags.map(t=>`<span class="text-[10px] md:text-xs text-gray-500 flex items-center gap-1"><span class="w-1 h-1 bg-primary rounded-full"></span>${t}</span>`).join('')}
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="text-base md:text-lg font-black text-white mb-1 uppercase tracking-tight">${car.title}</h3>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        ${car.price?`<span class="text-primary text-xs font-bold">${pr}</span>`:''}
+                        ${rp?`<span class="text-gray-500 text-[10px]">| Rent: ${rp}</span>`:''}
                     </div>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 mb-4">
+                        ${(car.tags||[]).map(t=>`<span class="text-[10px] text-gray-500 flex items-center gap-1"><span class="w-1 h-1 bg-primary rounded-full"></span>${t}</span>`).join('')}
+                    </div>
+                    ${car.year||car.mileage||car.fuel_type?`<div class="flex flex-wrap gap-3 mb-4 text-[10px] text-gray-600">
+                        ${car.year?`<span>${car.year}</span>`:''}${car.mileage?`<span>• ${car.mileage}</span>`:''}${car.fuel_type?`<span>• ${car.fuel_type}</span>`:''}${car.transmission?`<span>• ${car.transmission}</span>`:''}
+                    </div>`:''}
                     <div class="mt-auto space-y-2">
-                        <a href="${wa}" target="_blank"
-                            class="btn-shine w-full bg-white text-darker font-black py-3 md:py-3.5 rounded-xl flex items-center justify-center gap-2 text-[11px] md:text-xs uppercase tracking-wider">
-                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Inquire for Price
-                        </a>
-                        <a href="${td}" target="_blank"
-                            class="w-full border border-gray-800 text-gray-500 font-bold py-2.5 md:py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-900 hover:text-white hover:border-gray-700 transition-all text-[10px] md:text-[11px] uppercase tracking-widest active:bg-gray-800">
-                            <i data-lucide="calendar" class="w-3 h-3"></i> Book Test Drive
-                        </a>
+                        <button onclick="event.stopPropagation();App.openInquiry('${car.id}','${car.title}')" class="btn-shine w-full bg-white text-darker font-black py-3 rounded-xl flex items-center justify-center gap-2 text-[11px] uppercase tracking-wider">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Inquire
+                        </button>
+                        <button onclick="event.stopPropagation();App.openBooking('${car.id}','${car.title}')" class="w-full border border-gray-800 text-gray-500 font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-900 text-[10px] uppercase tracking-widest active:bg-gray-800 transition-all">
+                            <i data-lucide="calendar" class="w-3 h-3"></i> Test Drive
+                        </button>
                     </div>
                 </div>
             </div>`);
         });
+        lucide.createIcons(); AOS.refresh();
+    },
 
+    // === RENDER REVIEWS ===
+    renderReviews() {
+        const g = document.getElementById('reviewsGrid');
+        if(!this.reviews.length) { g.innerHTML = '<p class="col-span-full text-center text-gray-600 text-sm py-8">No reviews yet. Be the first!</p>'; return; }
+        g.innerHTML = this.reviews.map((r,i)=>{
+            const initials = r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+            return `<div class="testimonial-card" data-aos="fade-up" data-aos-delay="${i*60}">
+                <div class="flex items-center gap-0.5 mb-3">${'<i data-lucide="star" class="w-3.5 h-3.5 text-primary fill-primary"></i>'.repeat(r.rating||5)}</div>
+                <p class="text-gray-400 text-xs mb-5 leading-relaxed italic">"${r.comment}"</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-yellow-600 flex items-center justify-center text-black font-black text-[11px]">${initials}</div>
+                    <div><p class="text-white font-bold text-xs">${r.name}</p>${r.role?`<p class="text-gray-600 text-[10px]">${r.role}</p>`:''}</div>
+                </div>
+            </div>`;
+        }).join('');
+        lucide.createIcons(); AOS.refresh();
+    },
+
+    // === CAR DETAIL ===
+    async openCarDetail(id) {
+        const car = this.cars.find(c=>c.id===id);
+        if(!car) return;
+        // Increment views
+        db.from('cars').update({views:(car.views||0)+1}).eq('id',id).then();
+        const el = document.getElementById('carDetailContent');
+        el.innerHTML = `
+        <div class="relative">
+            <img src="${car.image_url||''}" alt="${car.title}" class="w-full h-56 sm:h-72 md:h-80 object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-transparent to-transparent"></div>
+            <button onclick="App.closeModal('carDetailModal')" class="absolute top-3 right-3 bg-black/50 backdrop-blur text-white p-2 rounded-full hover:bg-black/80"><i data-lucide="x" class="w-4 h-4"></i></button>
+            ${car.featured?'<div class="absolute top-3 left-3"><span class="bg-primary text-black text-[9px] font-black px-3 py-1 rounded-full">★ FEATURED</span></div>':''}
+        </div>
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <h2 class="text-white font-black text-xl md:text-2xl uppercase tracking-tight">${car.title}</h2>
+                    <span class="text-gray-500 text-xs capitalize">${car.category||''} ${car.color?'• '+car.color:''}</span>
+                </div>
+                <div class="text-right">
+                    ${car.price?`<div class="text-primary font-black text-lg">${this.fmtPrice(car.price)}</div>`:''}
+                    ${car.rent_price?`<div class="text-gray-500 text-xs">Rent: ${this.fmtPrice(car.rent_price)}/day</div>`:''}
+                </div>
+            </div>
+            ${car.description?`<p class="text-gray-400 text-sm leading-relaxed mb-5">${car.description}</p>`:''}
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                ${car.year?`<div class="bg-gray-900/60 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 uppercase mb-1">Year</p><p class="text-white font-bold text-sm">${car.year}</p></div>`:''}
+                ${car.mileage?`<div class="bg-gray-900/60 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 uppercase mb-1">Mileage</p><p class="text-white font-bold text-sm">${car.mileage}</p></div>`:''}
+                ${car.fuel_type?`<div class="bg-gray-900/60 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 uppercase mb-1">Fuel</p><p class="text-white font-bold text-sm">${car.fuel_type}</p></div>`:''}
+                ${car.transmission?`<div class="bg-gray-900/60 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 uppercase mb-1">Trans.</p><p class="text-white font-bold text-sm">${car.transmission}</p></div>`:''}
+            </div>
+            ${(car.tags||[]).length?`<div class="flex flex-wrap gap-2 mb-6">${car.tags.map(t=>`<span class="bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-full border border-primary/20">${t}</span>`).join('')}</div>`:''}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="App.closeModal('carDetailModal');App.openInquiry('${car.id}','${car.title}')" class="btn-shine bg-primary text-darker font-black py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> Inquire Now</button>
+                <button onclick="App.closeModal('carDetailModal');App.openBooking('${car.id}','${car.title}')" class="btn-shine bg-white text-darker font-black py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2"><i data-lucide="calendar" class="w-4 h-4"></i> Test Drive</button>
+            </div>
+            <a href="https://wa.me/250786075521?text=Hi! I'm interested in *${car.title}*. Can I get more details?" target="_blank" class="block text-center text-primary text-xs font-bold mt-4 hover:underline">Or chat directly on WhatsApp →</a>
+        </div>`;
         lucide.createIcons();
-        AOS.refresh();
+        this.openModal('carDetailModal');
+    },
+
+    // === INQUIRY ===
+    openInquiry(id,title) {
+        document.getElementById('inquiryCarId').value = id;
+        document.getElementById('inquiryCarTitleVal').value = title;
+        document.getElementById('inquiryCarTitle').textContent = title;
+        this.openModal('inquiryModal');
+    },
+
+    async submitInquiry(form) {
+        const fd = new FormData(form);
+        const data = {
+            car_id: document.getElementById('inquiryCarId').value || null,
+            car_title: document.getElementById('inquiryCarTitleVal').value,
+            name: fd.get('name'), phone: fd.get('phone'),
+            email: fd.get('email'), message: fd.get('message'), status:'new'
+        };
+        const {error} = await db.from('inquiries').insert(data);
+        if(error) { this.toast('Failed to submit. Try again.','error'); return; }
+        this.toast('Inquiry sent! We\'ll contact you shortly.','success');
+        form.reset(); this.closeModal('inquiryModal');
+        window.open(`https://wa.me/250786075521?text=Hi! I'm ${data.name}. I just submitted an inquiry about *${data.car_title}* on your website.`,'_blank');
+    },
+
+    // === BOOKING ===
+    openBooking(id,title) {
+        document.getElementById('bookingCarId').value = id;
+        document.getElementById('bookingCarTitleVal').value = title;
+        document.getElementById('bookingCarTitle').textContent = title;
+        const dateInput = document.querySelector('#bookingForm input[name="date"]');
+        dateInput.min = new Date().toISOString().split('T')[0];
+        this.openModal('bookingModal');
+    },
+
+    async submitBooking(form) {
+        const fd = new FormData(form);
+        const data = {
+            car_id: document.getElementById('bookingCarId').value || null,
+            car_title: document.getElementById('bookingCarTitleVal').value,
+            name: fd.get('name'), phone: fd.get('phone'),
+            preferred_date: fd.get('date'), preferred_time: fd.get('time'),
+            notes: fd.get('notes'), status:'pending'
+        };
+        const {error} = await db.from('bookings').insert(data);
+        if(error) { this.toast('Failed to book. Try again.','error'); return; }
+        this.toast('Test drive booked! We\'ll confirm shortly.','success');
+        form.reset(); this.closeModal('bookingModal');
+        window.open(`https://wa.me/250786075521?text=Hi! I'm ${data.name}. I just booked a test drive for *${data.car_title}* on ${data.preferred_date}.`,'_blank');
+    },
+
+    // === REVIEW ===
+    openReviewModal() { this.openModal('reviewModal'); },
+    async submitReview(form) {
+        const fd = new FormData(form);
+        const {error} = await db.from('reviews').insert({
+            name: fd.get('name'), role: fd.get('role'),
+            rating: this.selectedRating, comment: fd.get('comment'), approved: false
+        });
+        if(error) { this.toast('Failed to submit.','error'); return; }
+        this.toast('Review submitted! Pending approval.','success');
+        form.reset(); this.closeModal('reviewModal');
+    },
+
+    // === SUBSCRIBE ===
+    async submitSub(form) {
+        const fd = new FormData(form);
+        const {error} = await db.from('subscribers').insert({ name: fd.get('name'), phone: fd.get('phone') });
+        if(error) { this.toast('Failed. Try again.','error'); return; }
+        this.toast('Subscribed! You\'ll get new arrival alerts.','success');
+        form.reset();
+    },
+
+    // === ADMIN ===
+    showAdmin() { document.getElementById('adminPanel').classList.remove('hidden'); document.body.style.overflow='hidden'; },
+    hideAdmin() { document.getElementById('adminPanel').classList.add('hidden'); document.body.style.overflow=''; },
+
+    async adminLogin(pwd) {
+        try {
+            const {data} = await db.from('site_settings').select('admin_password').eq('id',1).single();
+            if(data && data.admin_password === pwd) {
+                this.adminLoggedIn = true;
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminMain').classList.remove('hidden');
+                this.adminTab('dashboard');
+                this.toast('Welcome, Admin!','success');
+            } else { this.toast('Wrong password.','error'); }
+        } catch(e) { this.toast('DB not ready. Run setup SQL first.','error'); }
+    },
+
+    adminLogout() {
+        this.adminLoggedIn = false;
+        document.getElementById('adminLogin').classList.remove('hidden');
+        document.getElementById('adminMain').classList.add('hidden');
+        document.getElementById('adminPwd').value = '';
+    },
+
+    async adminTab(tab) {
+        this.currentAdminTab = tab;
+        document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+        const el = document.getElementById('adminContent');
+        el.innerHTML = '<div class="flex justify-center py-20"><div class="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
+
+        if(tab==='dashboard') await this.renderDashboard(el);
+        else if(tab==='cars') await this.renderAdminCars(el);
+        else if(tab==='inquiries') await this.renderAdminInquiries(el);
+        else if(tab==='bookings') await this.renderAdminBookings(el);
+        else if(tab==='adminReviews') await this.renderAdminReviews(el);
+        else if(tab==='subscribers') await this.renderAdminSubscribers(el);
+        else if(tab==='settings') await this.renderAdminSettings(el);
+        lucide.createIcons();
+    },
+
+    async renderDashboard(el) {
+        const [cars,inqs,bks,revs,subs] = await Promise.all([
+            db.from('cars').select('*',{count:'exact',head:true}),
+            db.from('inquiries').select('*',{count:'exact',head:true}),
+            db.from('bookings').select('*',{count:'exact',head:true}),
+            db.from('reviews').select('*',{count:'exact',head:true}),
+            db.from('subscribers').select('*',{count:'exact',head:true})
+        ]);
+        const newInqs = await db.from('inquiries').select('*',{count:'exact',head:true}).eq('status','new');
+        const pendBks = await db.from('bookings').select('*',{count:'exact',head:true}).eq('status','pending');
+        const {data:recent} = await db.from('inquiries').select('*').order('created_at',{ascending:false}).limit(5);
+        el.innerHTML = `
+        <h2 class="text-white font-black text-xl mb-6">Dashboard</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-8">
+            <div class="admin-card"><p class="text-2xl font-black gradient-text">${cars.count||0}</p><p class="text-gray-500 text-[10px] uppercase mt-1">Total Cars</p></div>
+            <div class="admin-card"><p class="text-2xl font-black gradient-text">${inqs.count||0}</p><p class="text-gray-500 text-[10px] uppercase mt-1">Inquiries</p><p class="text-primary text-[10px] font-bold">${newInqs.count||0} new</p></div>
+            <div class="admin-card"><p class="text-2xl font-black gradient-text">${bks.count||0}</p><p class="text-gray-500 text-[10px] uppercase mt-1">Bookings</p><p class="text-primary text-[10px] font-bold">${pendBks.count||0} pending</p></div>
+            <div class="admin-card"><p class="text-2xl font-black gradient-text">${revs.count||0}</p><p class="text-gray-500 text-[10px] uppercase mt-1">Reviews</p></div>
+            <div class="admin-card"><p class="text-2xl font-black gradient-text">${subs.count||0}</p><p class="text-gray-500 text-[10px] uppercase mt-1">Subscribers</p></div>
+        </div>
+        <h3 class="text-white font-bold text-sm mb-3">Recent Inquiries</h3>
+        <div class="space-y-2">
+            ${(recent||[]).map(r=>`<div class="admin-card flex items-center justify-between gap-3">
+                <div class="min-w-0"><p class="text-white font-bold text-xs truncate">${r.name}</p><p class="text-gray-500 text-[10px]">${r.car_title||'General'} • ${r.phone}</p></div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="status-badge status-${r.status}">${r.status}</span>
+                    <span class="text-gray-600 text-[10px]">${this.timeAgo(r.created_at)}</span>
+                </div>
+            </div>`).join('')||'<p class="text-gray-600 text-xs">No inquiries yet.</p>'}
+        </div>`;
+    },
+
+    async renderAdminCars(el) {
+        const {data:cars} = await db.from('cars').select('*').order('created_at',{ascending:false});
+        el.innerHTML = `
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-black text-xl">Cars (${(cars||[]).length})</h2>
+            <button onclick="App.showCarForm()" class="admin-btn bg-primary text-darker"><i data-lucide="plus" class="w-3 h-3"></i> Add Car</button>
+        </div>
+        <div id="carFormArea" class="hidden mb-6"></div>
+        <div class="space-y-2" id="adminCarList">
+            ${(cars||[]).map(c=>`<div class="admin-card flex items-center gap-3">
+                <img src="${c.image_url||''}" class="w-16 h-12 md:w-20 md:h-14 object-cover rounded-lg flex-shrink-0 bg-gray-800">
+                <div class="min-w-0 flex-1">
+                    <p class="text-white font-bold text-xs truncate">${c.title}</p>
+                    <p class="text-gray-500 text-[10px]">${c.category||''} • ${c.year||''} • ${c.available?'✅ Available':'❌ Sold'}</p>
+                    <p class="text-primary text-[10px] font-bold">${c.price?this.fmtPrice(c.price):'-'} ${c.rent_price?'| Rent:'+this.fmtPrice(c.rent_price)+'/d':''}</p>
+                </div>
+                <div class="flex gap-1 flex-shrink-0">
+                    <button onclick="App.editCar('${c.id}')" class="admin-btn bg-gray-800 text-gray-400 text-[10px] py-1.5 px-2"><i data-lucide="pencil" class="w-3 h-3"></i></button>
+                    <button onclick="App.deleteCar('${c.id}','${c.title}')" class="admin-btn bg-red-900/30 text-red-400 text-[10px] py-1.5 px-2"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                </div>
+            </div>`).join('')||'<p class="text-gray-600 text-xs">No cars yet.</p>'}
+        </div>`;
+    },
+
+    showCarForm(car=null) {
+        const a = document.getElementById('carFormArea');
+        a.classList.remove('hidden');
+        a.innerHTML = `
+        <form id="carForm" class="admin-card space-y-3">
+            <h3 class="text-white font-bold text-sm mb-2">${car?'Edit':'Add New'} Car</h3>
+            <input type="hidden" id="cf_id" value="${car?.id||''}">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="text" id="cf_title" placeholder="Title *" required value="${car?.title||''}" class="admin-input">
+                <select id="cf_category" class="admin-input admin-select">
+                    <option value="luxury" ${car?.category==='luxury'?'selected':''}>Luxury</option>
+                    <option value="suv" ${car?.category==='suv'?'selected':''}>SUV</option>
+                    <option value="sport" ${car?.category==='sport'?'selected':''}>Sport</option>
+                    <option value="electric" ${car?.category==='electric'?'selected':''}>Electric</option>
+                    <option value="family" ${car?.category==='family'?'selected':''}>Family</option>
+                </select>
+                <input type="number" id="cf_price" placeholder="Sale Price (RWF)" value="${car?.price||''}" class="admin-input">
+                <input type="number" id="cf_rent" placeholder="Rent Price/day" value="${car?.rent_price||''}" class="admin-input">
+                <select id="cf_ptype" class="admin-input admin-select">
+                    <option value="both" ${car?.price_type==='both'?'selected':''}>Sale & Rent</option>
+                    <option value="sale" ${car?.price_type==='sale'?'selected':''}>Sale Only</option>
+                    <option value="rent" ${car?.price_type==='rent'?'selected':''}>Rent Only</option>
+                </select>
+                <input type="text" id="cf_image" placeholder="Image URL" value="${car?.image_url||''}" class="admin-input">
+                <input type="number" id="cf_year" placeholder="Year" value="${car?.year||''}" class="admin-input">
+                <input type="text" id="cf_mileage" placeholder="Mileage" value="${car?.mileage||''}" class="admin-input">
+                <select id="cf_fuel" class="admin-input admin-select">
+                    <option value="">Fuel Type</option>
+                    <option ${car?.fuel_type==='Petrol'?'selected':''}>Petrol</option>
+                    <option ${car?.fuel_type==='Diesel'?'selected':''}>Diesel</option>
+                    <option ${car?.fuel_type==='Hybrid'?'selected':''}>Hybrid</option>
+                    <option ${car?.fuel_type==='Electric'?'selected':''}>Electric</option>
+                </select>
+                <select id="cf_trans" class="admin-input admin-select">
+                    <option value="">Transmission</option>
+                    <option ${car?.transmission==='Automatic'?'selected':''}>Automatic</option>
+                    <option ${car?.transmission==='Manual'?'selected':''}>Manual</option>
+                    <option ${car?.transmission==='CVT'?'selected':''}>CVT</option>
+                </select>
+                <input type="text" id="cf_color" placeholder="Color" value="${car?.color||''}" class="admin-input">
+            </div>
+            <input type="text" id="cf_tags" placeholder="Tags (comma separated)" value="${(car?.tags||[]).join(', ')}" class="admin-input">
+            <textarea id="cf_desc" placeholder="Description" rows="3" class="admin-input" style="resize:none">${car?.description||''}</textarea>
+            <div class="flex gap-3">
+                <label class="flex items-center gap-2 text-xs text-gray-400"><input type="checkbox" id="cf_featured" ${car?.featured?'checked':''}> Featured</label>
+                <label class="flex items-center gap-2 text-xs text-gray-400"><input type="checkbox" id="cf_available" ${car?.available!==false?'checked':''}> Available</label>
+            </div>
+            <div class="flex gap-2">
+                <button type="submit" class="admin-btn bg-primary text-darker flex-1 justify-center"><i data-lucide="save" class="w-3 h-3"></i> Save</button>
+                <button type="button" onclick="document.getElementById('carFormArea').classList.add('hidden')" class="admin-btn bg-gray-800 text-gray-400">Cancel</button>
+            </div>
+        </form>`;
+        lucide.createIcons();
+        document.getElementById('carForm').onsubmit = e => { e.preventDefault(); App.saveCar(); };
+        a.scrollIntoView({behavior:'smooth'});
+    },
+
+    async editCar(id) {
+        const {data} = await db.from('cars').select('*').eq('id',id).single();
+        if(data) this.showCarForm(data);
+    },
+
+    async saveCar() {
+        const id = document.getElementById('cf_id').value;
+        const data = {
+            title: document.getElementById('cf_title').value,
+            category: document.getElementById('cf_category').value,
+            price: parseFloat(document.getElementById('cf_price').value)||null,
+            rent_price: parseFloat(document.getElementById('cf_rent').value)||null,
+            price_type: document.getElementById('cf_ptype').value,
+            image_url: document.getElementById('cf_image').value,
+            year: parseInt(document.getElementById('cf_year').value)||null,
+            mileage: document.getElementById('cf_mileage').value,
+            fuel_type: document.getElementById('cf_fuel').value,
+            transmission: document.getElementById('cf_trans').value,
+            color: document.getElementById('cf_color').value,
+            tags: document.getElementById('cf_tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+            description: document.getElementById('cf_desc').value,
+            featured: document.getElementById('cf_featured').checked,
+            available: document.getElementById('cf_available').checked,
+            updated_at: new Date().toISOString()
+        };
+        let error;
+        if(id) { ({error} = await db.from('cars').update(data).eq('id',id)); }
+        else { ({error} = await db.from('cars').insert(data)); }
+        if(error) { this.toast('Error: '+error.message,'error'); return; }
+        this.toast(id?'Car updated!':'Car added!','success');
+        document.getElementById('carFormArea').classList.add('hidden');
+        this.adminTab('cars');
+        this.loadCars();
+    },
+
+    async deleteCar(id,title) {
+        if(!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+        await db.from('cars').delete().eq('id',id);
+        this.toast('Car deleted.','info');
+        this.adminTab('cars'); this.loadCars();
+    },
+
+    async renderAdminInquiries(el) {
+        const {data} = await db.from('inquiries').select('*').order('created_at',{ascending:false});
+        el.innerHTML = `
+        <h2 class="text-white font-black text-xl mb-6">Inquiries (${(data||[]).length})</h2>
+        <div class="space-y-2">
+            ${(data||[]).map(r=>`<div class="admin-card">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                    <div class="min-w-0">
+                        <p class="text-white font-bold text-xs">${r.name}</p>
+                        <p class="text-gray-500 text-[10px]">${r.phone} ${r.email?'• '+r.email:''}</p>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <select onchange="App.updateStatus('inquiries','${r.id}',this.value)" class="admin-input text-[10px] py-1 px-2 w-auto rounded-lg">
+                            <option value="new" ${r.status==='new'?'selected':''}>New</option>
+                            <option value="contacted" ${r.status==='contacted'?'selected':''}>Contacted</option>
+                            <option value="closed" ${r.status==='closed'?'selected':''}>Closed</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="text-primary text-[10px] font-bold">${r.car_title||'General Inquiry'}</p>
+                ${r.message?`<p class="text-gray-400 text-[11px] mt-1">${r.message}</p>`:''}
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-gray-600 text-[10px]">${this.fmtDate(r.created_at)}</span>
+                    <a href="https://wa.me/${r.phone.replace(/\D/g,'')}" target="_blank" class="text-[#25D366] text-[10px] font-bold flex items-center gap-1"><i data-lucide="message-circle" class="w-3 h-3"></i> Reply</a>
+                </div>
+            </div>`).join('')||'<p class="text-gray-600 text-xs">No inquiries yet.</p>'}
+        </div>`;
+    },
+
+    async renderAdminBookings(el) {
+        const {data} = await db.from('bookings').select('*').order('created_at',{ascending:false});
+        el.innerHTML = `
+        <h2 class="text-white font-black text-xl mb-6">Bookings (${(data||[]).length})</h2>
+        <div class="space-y-2">
+            ${(data||[]).map(r=>`<div class="admin-card">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                    <div class="min-w-0">
+                        <p class="text-white font-bold text-xs">${r.name} — <span class="text-primary">${r.car_title||''}</span></p>
+                        <p class="text-gray-500 text-[10px]">${r.phone} • ${r.preferred_date||''} ${r.preferred_time||''}</p>
+                    </div>
+                    <select onchange="App.updateStatus('bookings','${r.id}',this.value)" class="admin-input text-[10px] py-1 px-2 w-auto rounded-lg flex-shrink-0">
+                        <option value="pending" ${r.status==='pending'?'selected':''}>Pending</option>
+                        <option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmed</option>
+                        <option value="completed" ${r.status==='completed'?'selected':''}>Completed</option>
+                        <option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelled</option>
+                    </select>
+                </div>
+                ${r.notes?`<p class="text-gray-400 text-[11px]">${r.notes}</p>`:''}
+                <span class="text-gray-600 text-[10px]">${this.fmtDate(r.created_at)}</span>
+            </div>`).join('')||'<p class="text-gray-600 text-xs">No bookings yet.</p>'}
+        </div>`;
+    },
+
+    async renderAdminReviews(el) {
+        const {data} = await db.from('reviews').select('*').order('created_at',{ascending:false});
+        el.innerHTML = `
+        <h2 class="text-white font-black text-xl mb-6">Reviews (${(data||[]).length})</h2>
+        <div class="space-y-2">
+            ${(data||[]).map(r=>`<div class="admin-card">
+                <div class="flex items-start justify-between gap-3 mb-2">
+                    <div>
+                        <p class="text-white font-bold text-xs">${r.name} ${'⭐'.repeat(r.rating||5)}</p>
+                        <p class="text-gray-500 text-[10px]">${r.role||''}</p>
+                    </div>
+                    <div class="flex gap-1 flex-shrink-0">
+                        <button onclick="App.toggleReview('${r.id}',${!r.approved})" class="admin-btn text-[10px] py-1 px-2 ${r.approved?'bg-green-900/30 text-green-400':'bg-gray-800 text-gray-400'}">${r.approved?'✓ Approved':'Approve'}</button>
+                        <button onclick="App.deleteReview('${r.id}')" class="admin-btn bg-red-900/30 text-red-400 text-[10px] py-1 px-2"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                    </div>
+                </div>
+                <p class="text-gray-400 text-[11px] italic">"${r.comment}"</p>
+                <span class="text-gray-600 text-[10px]">${this.fmtDate(r.created_at)}</span>
+            </div>`).join('')||'<p class="text-gray-600 text-xs">No reviews yet.</p>'}
+        </div>`;
+    },
+
+    async toggleReview(id,approved) {
+        await db.from('reviews').update({approved}).eq('id',id);
+        this.toast(approved?'Review approved!':'Review hidden.','success');
+        this.adminTab('adminReviews'); this.loadReviews();
+    },
+
+    async deleteReview(id) {
+        if(!confirm('Delete this review?')) return;
+        await db.from('reviews').delete().eq('id',id);
+        this.toast('Review deleted.','info'); this.adminTab('adminReviews'); this.loadReviews();
+    },
+
+    async renderAdminSubscribers(el) {
+        const {data} = await db.from('subscribers').select('*').order('created_at',{ascending:false});
+        el.innerHTML = `
+        <h2 class="text-white font-black text-xl mb-6">Subscribers (${(data||[]).length})</h2>
+        <div class="space-y-2">
+            ${(data||[]).map(r=>`<div class="admin-card flex items-center justify-between">
+                <div><p class="text-white font-bold text-xs">${r.name||'-'}</p><p class="text-gray-500 text-[10px]">${r.phone||r.email||'-'}</p></div>
+                <span class="text-gray-600 text-[10px]">${this.fmtDate(r.created_at)}</span>
+            </div>`).join('')||'<p class="text-gray-600 text-xs">No subscribers yet.</p>'}
+        </div>`;
+    },
+
+    async renderAdminSettings(el) {
+        const {data:s} = await db.from('site_settings').select('*').eq('id',1).single();
+        el.innerHTML = `
+        <h2 class="text-white font-black text-xl mb-6">Settings</h2>
+        <div class="admin-card max-w-md space-y-4">
+            <div>
+                <label class="text-gray-400 text-[10px] uppercase mb-1 block">Admin Password</label>
+                <input type="password" id="set_pwd" value="${s?.admin_password||''}" class="admin-input">
+            </div>
+            <button onclick="App.saveSettings()" class="admin-btn bg-primary text-darker w-full justify-center"><i data-lucide="save" class="w-3 h-3"></i> Save Settings</button>
+        </div>
+        <div class="admin-card max-w-md mt-4">
+            <h3 class="text-white font-bold text-sm mb-3">Database</h3>
+            <button onclick="App.showSetupSQL()" class="admin-btn bg-gray-800 text-gray-400 w-full justify-center mb-2">View Setup SQL</button>
+        </div>`;
+    },
+
+    async saveSettings() {
+        const pwd = document.getElementById('set_pwd').value;
+        if(!pwd) { this.toast('Password cannot be empty.','error'); return; }
+        await db.from('site_settings').update({admin_password:pwd,updated_at:new Date().toISOString()}).eq('id',1);
+        this.toast('Settings saved!','success');
+    },
+
+    async updateStatus(table,id,status) {
+        await db.from(table).update({status}).eq('id',id);
+        this.toast('Status updated.','success');
+    },
+
+    // === HELPERS ===
+    fmtPrice(p) { return 'RWF ' + Number(p).toLocaleString(); },
+    fmtDate(d) { if(!d) return ''; const dt=new Date(d); return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); },
+    timeAgo(d) {
+        const s = Math.floor((Date.now()-new Date(d))/1000);
+        if(s<60) return 'just now'; if(s<3600) return Math.floor(s/60)+'m ago';
+        if(s<86400) return Math.floor(s/3600)+'h ago'; return Math.floor(s/86400)+'d ago';
+    },
+
+    openModal(id) { const m=document.getElementById(id); m.classList.add('show'); document.body.style.overflow='hidden'; },
+    closeModal(id) { document.getElementById(id).classList.remove('show'); if(!document.querySelector('.modal-overlay.show')) document.body.style.overflow=''; },
+
+    showSetupSQL() { this.openModal('setupModal'); },
+    copySQL() { navigator.clipboard.writeText(SETUP_SQL).then(()=>this.toast('SQL copied!','success')).catch(()=>this.toast('Copy failed.','error')); },
+
+    toast(msg,type='info') {
+        const t = document.getElementById('toast');
+        t.textContent = msg; t.className = `toast toast-${type} show`;
+        setTimeout(()=>t.classList.remove('show'),4000);
+    },
+
+    // === SETUP ===
+    setupParticles() {
+        const c=document.getElementById('particles'); const n = window.innerWidth<768?10:20;
+        for(let i=0;i<n;i++){const p=document.createElement('div');p.classList.add('particle');const s=Math.random()*2.5+1;p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;opacity:${Math.random()*0.4+0.1}`;c.appendChild(p);}
+    },
+
+    setupNav() {
+        const nav=document.getElementById('navbar'),btt=document.getElementById('btt');
+        window.addEventListener('scroll',()=>{
+            if(window.scrollY>60){nav.classList.add('scrolled');btt.style.opacity='1';btt.style.pointerEvents='auto';}
+            else{nav.classList.remove('scrolled');btt.style.opacity='0';btt.style.pointerEvents='none';}
+        },{passive:true});
+    },
+
+    setupMobile() {
+        const btn=document.getElementById('mobBtn'),menu=document.getElementById('mobMenu');
+        btn.addEventListener('click',()=>{menu.classList.toggle('hidden');requestAnimationFrame(()=>menu.querySelector('.mob-menu-inner').classList.toggle('open'));});
+        document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',()=>{menu.classList.add('hidden');menu.querySelector('.mob-menu-inner').classList.remove('open');}));
+    },
+
+    setupForms() {
+        document.getElementById('inquiryForm').onsubmit = e => { e.preventDefault(); this.submitInquiry(e.target); };
+        document.getElementById('bookingForm').onsubmit = e => { e.preventDefault(); this.submitBooking(e.target); };
+        document.getElementById('reviewForm').onsubmit = e => { e.preventDefault(); this.submitReview(e.target); };
+        document.getElementById('subForm').onsubmit = e => { e.preventDefault(); this.submitSub(e.target); };
+        document.getElementById('loginForm').onsubmit = e => { e.preventDefault(); this.adminLogin(document.getElementById('adminPwd').value); };
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(m=>{
+            m.addEventListener('click',e=>{if(e.target===m) this.closeModal(m.id);});
+        });
+    },
+
+    setupFilters() {
+        document.getElementById('carSearch').addEventListener('input',e=>{this.renderCars(e.target.value,this.activeCat);});
+        document.querySelectorAll('.filter-tab').forEach(tab=>{
+            tab.addEventListener('click',()=>{
+                document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+                tab.classList.add('active');
+                this.activeCat = tab.dataset.filter;
+                this.renderCars(document.getElementById('carSearch').value,this.activeCat);
+            });
+        });
+    },
+
+    setupRating() {
+        document.querySelectorAll('#ratingStars button').forEach(btn=>{
+            btn.addEventListener('click',()=>{
+                this.selectedRating = parseInt(btn.dataset.r);
+                document.getElementById('ratingVal').value = this.selectedRating;
+                document.querySelectorAll('#ratingStars button').forEach((b,i)=>{
+                    const icon = b.querySelector('i');
+                    if(i<this.selectedRating) icon.classList.add('fill-primary');
+                    else icon.classList.remove('fill-primary');
+                });
+            });
+        });
+    },
+
+    setupSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{
+            a.addEventListener('click',function(e){
+                e.preventDefault();
+                const t=document.querySelector(this.getAttribute('href'));
+                if(t){const o=document.getElementById('navbar').offsetHeight+8;const y=t.getBoundingClientRect().top+window.scrollY-o;window.scrollTo({top:y,behavior:'smooth'});}
+            });
+        });
     }
+};
 
-    document.getElementById('carSearch').addEventListener('input', e => render(e.target.value, activeCat));
-
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
-            tab.classList.add('active');
-            activeCat = tab.dataset.filter;
-            render(document.getElementById('carSearch').value, activeCat);
-        });
-    });
-
-    render();
-
-    // Smooth scroll for anchors
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', function(e){
-            e.preventDefault();
-            const t = document.querySelector(this.getAttribute('href'));
-            if(t){
-                const offset = nav.offsetHeight + 8;
-                const y = t.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-            }
-        });
-    });
+// Boot
+document.addEventListener('DOMContentLoaded', () => {
+    App.init();
+    App.setupSmoothScroll();
+});
 </script>
-
 </body>
 </html>
