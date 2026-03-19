@@ -485,7 +485,7 @@
                 <button type="button" onclick="App.hideAdmin()" class="w-full text-gray-600 text-xs hover:text-primary py-2">← Back to Website</button>
             </form>
             <div class="mt-8 text-center">
-                <button onclick="App.showSetupSQL()" class="text-gray-700 text-[10px] hover:text-primary transition-colors underline">Database Setup Guide</button>
+              
             </div>
         </div>
     </div>
@@ -537,7 +537,7 @@
     <div class="modal-content modal-lg">
         <div class="p-6">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-white font-black text-lg">Database Setup</h3>
+                <h3 class="text-white font-black text-lg">Database & Storage Setup</h3>
                 <button onclick="App.closeModal('setupModal')" class="text-gray-500 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <p class="text-gray-400 text-xs mb-4">Copy this SQL and run it in your <a href="https://supabase.com/dashboard" target="_blank" class="text-primary underline">Supabase SQL Editor</a>:</p>
@@ -564,9 +564,10 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const SETUP_SQL = `-- Car Deals Direct Kigali - Database Setup
+const SETUP_SQL = `-- Car Deals Direct Kigali - Complete Database + Storage Setup
 -- Run this in Supabase SQL Editor (supabase.com/dashboard)
 
+-- 1. Create tables (if not exists)
 CREATE TABLE IF NOT EXISTS cars (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   title TEXT NOT NULL,
@@ -644,7 +645,31 @@ CREATE TABLE IF NOT EXISTS site_settings (
 ALTER TABLE site_settings DISABLE ROW LEVEL SECURITY;
 INSERT INTO site_settings (id, admin_password) VALUES (1, 'admin123') ON CONFLICT (id) DO NOTHING;
 
--- Sample Cars
+-- 2. Create storage bucket for car images (if not exists)
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('car-images', 'car-images', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 3. Allow public access to view images (everyone can read)
+CREATE POLICY "Public Read Access" 
+ON storage.objects FOR SELECT 
+USING ( bucket_id = 'car-images' );
+
+-- 4. Allow anyone to upload images (simplified for demo – in production you'd restrict to authenticated users)
+CREATE POLICY "Allow Uploads" 
+ON storage.objects FOR INSERT 
+WITH CHECK ( bucket_id = 'car-images' );
+
+-- 5. Allow anyone to update/delete their own images (based on path)
+CREATE POLICY "Allow Updates" 
+ON storage.objects FOR UPDATE 
+USING ( bucket_id = 'car-images' );
+
+CREATE POLICY "Allow Deletes" 
+ON storage.objects FOR DELETE 
+USING ( bucket_id = 'car-images' );
+
+-- Sample Cars (optional)
 INSERT INTO cars (title, description, price, rent_price, category, tags, image_url, featured, mileage, year, fuel_type, transmission, color) VALUES
 ('Luxury Executive','Premium executive sedan with full luxury package.',35000000,150000,'luxury',ARRAY['V8 Engine','Leather','Panoramic'],'https://i.imgur.com/KRmHOGK.jpeg',true,'45,000 km',2021,'Petrol','Automatic','Black'),
 ('Premium SUV','Powerful SUV with 4WD and hybrid technology.',42000000,200000,'suv',ARRAY['4WD','Heated Seats','Hybrid'],'https://i.imgur.com/t8A3ISr.jpeg',true,'32,000 km',2022,'Hybrid','Automatic','White'),
@@ -1040,7 +1065,7 @@ const App = {
         const a = document.getElementById('carFormArea');
         a.classList.remove('hidden');
         a.innerHTML = `
-        <form id="carForm" class="admin-card space-y-3">
+        <form id="carForm" class="admin-card space-y-3" enctype="multipart/form-data">
             <h3 class="text-white font-bold text-sm mb-2">${car?'Edit':'Add New'} Car</h3>
             <input type="hidden" id="cf_id" value="${car?.id||''}">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1059,7 +1084,9 @@ const App = {
                     <option value="sale" ${car?.price_type==='sale'?'selected':''}>Sale Only</option>
                     <option value="rent" ${car?.price_type==='rent'?'selected':''}>Rent Only</option>
                 </select>
-                <input type="text" id="cf_image" placeholder="Image URL" value="${car?.image_url||''}" class="admin-input">
+                <!-- NEW: File upload input -->
+                <input type="file" id="cf_image_file" accept="image/*" class="admin-input">
+                <input type="text" id="cf_image" placeholder="Image URL (leave blank if uploading file)" value="${car?.image_url||''}" class="admin-input">
                 <input type="number" id="cf_year" placeholder="Year" value="${car?.year||''}" class="admin-input">
                 <input type="text" id="cf_mileage" placeholder="Mileage" value="${car?.mileage||''}" class="admin-input">
                 <select id="cf_fuel" class="admin-input admin-select">
@@ -1100,13 +1127,34 @@ const App = {
 
     async saveCar() {
         const id = document.getElementById('cf_id').value;
+        const fileInput = document.getElementById('cf_image_file');
+        let imageUrl = document.getElementById('cf_image').value;
+
+        // If a file is selected, upload it first
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `public/${fileName}`;
+
+            this.toast('Uploading image...', 'info');
+            const { error: uploadError } = await db.storage.from('car-images').upload(filePath, file);
+            if (uploadError) {
+                this.toast('Image upload failed: ' + uploadError.message, 'error');
+                return;
+            }
+            // Get public URL
+            const { data: urlData } = db.storage.from('car-images').getPublicUrl(filePath);
+            imageUrl = urlData.publicUrl;
+        }
+
         const data = {
             title: document.getElementById('cf_title').value,
             category: document.getElementById('cf_category').value,
             price: parseFloat(document.getElementById('cf_price').value)||null,
             rent_price: parseFloat(document.getElementById('cf_rent').value)||null,
             price_type: document.getElementById('cf_ptype').value,
-            image_url: document.getElementById('cf_image').value,
+            image_url: imageUrl,
             year: parseInt(document.getElementById('cf_year').value)||null,
             mileage: document.getElementById('cf_mileage').value,
             fuel_type: document.getElementById('cf_fuel').value,
